@@ -1,5 +1,7 @@
 name: 🚀 Deploy Frontend on push via ftp
 on: push
+  branches:
+    - dev
 jobs:
   web-deploy:
     name: 🎉 Deploy
