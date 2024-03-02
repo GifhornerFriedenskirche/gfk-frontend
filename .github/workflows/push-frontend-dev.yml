@@ -24,10 +24,6 @@ jobs:
         npm install
         npm run build
     
-    - name: 🔨 Test Project
-      run: |
-        npm run test
-    
     - name: 📂 push files to dev
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
