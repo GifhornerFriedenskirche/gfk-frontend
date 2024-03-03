@@ -30,4 +30,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+
+    - name: List files in the repository after push
+      run: ls -la ${{ github.workspace }}
         local-dir: ./dist/
