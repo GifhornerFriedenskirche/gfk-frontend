@@ -1,8 +1,10 @@
 name: 🚀 Deploy Frontend on push via ftp
 on:
   push:
-    branches:
-      - dev
+    branches: [ "dev", "dev-environment-setup" ]
+  pull_request:
+    branches: [ "dev" ]
+  workflow_dispatch:
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -10,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Use Node.js 20
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
       
@@ -22,10 +24,13 @@ jobs:
         npm install
         npm run build
     
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    - name: 📂 push files to dev
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
+
+    - name: List files in the repository after push
+      working-directory: dist
+      run: ls -la ${{ github.workspace }}
