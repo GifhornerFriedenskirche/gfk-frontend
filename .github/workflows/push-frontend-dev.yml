@@ -1,6 +1,7 @@
 name: 🚀 Deploy Frontend on push via ftp
 on:
   push:
+
     branches: [ "dev", "dev-environment-setup" ]
   pull_request:
     branches: [ "dev" ]
