@@ -1,20 +1,29 @@
+---
 ci/cd:
-  - .github/**
+  - changed-files:
+    - any-glob-to-any-file: .github/**
 
 infrastructure:
-  - terraform/**
+  - changed-files:
+    - any-glob-to-any-file: terraform/**
 
 documentation:
-  - README.md
-  - ./*.md
+  - changed-files:
+    - any-glob-to-any-file:
+      - docs/**
+      - guides/**
+      - README.md
+      - ./*.md
 
-orchestration:
-  - airflow/**
+app-basics:
+  - changed-files:
+    - src/app/*
 
-transformations:
-  - dbt/**
+app-core:
+  - changed-files:
+    - src/app/core/*
 
-data-quality:
-  - soda/**
-  - great-expectations/**
-  - great-expectations-documentation/**
+app-shared:
+  - changed-files:
+    - src/app/shared/*
+...

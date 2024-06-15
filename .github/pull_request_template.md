@@ -1,10 +1,9 @@
-# Description
-What:
+## Description
+### What:
 
-How:
+### How:
 
----
 
-# Code Checklist
+## Code Checklist
 - [ ] tested
 - [ ] documented

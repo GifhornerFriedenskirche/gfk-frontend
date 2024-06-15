@@ -1,16 +1,20 @@
+---
 name: Pull Request Labeling
 
 on:
-  - pull_request
+  - pull_request_target
 
 jobs:
-  triage:
+  labeler:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/labeler@v5
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
   size-label:
     runs-on: ubuntu-latest
     steps:
@@ -26,3 +30,4 @@ jobs:
               "50": "M",
               "250": "Too Large"
             }
+...
