@@ -1,4 +1,5 @@
 # GfkFrontend
+[![Super-Linter](https://github.com/GifhornerFriedenskirche/gfk-frontend/actions/workflows/linter.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.0.
 
