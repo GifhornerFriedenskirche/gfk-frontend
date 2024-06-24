@@ -9,7 +9,6 @@ import { NavigationService } from '../../services/navigation.service';
   imports: [CommonModule, HttpClientModule],
   providers: [NavigationService],
   templateUrl: './header-navigation.component.html',
-  styleUrls: ['./header-navigation.component.scss'],
 })
 export class HeaderNavigationComponent implements OnInit {
   constructor(private navigationService: NavigationService) {}
