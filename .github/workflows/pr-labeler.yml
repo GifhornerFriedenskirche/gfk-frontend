@@ -14,7 +14,6 @@ jobs:
       - uses: actions/labeler@v5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/labeler.yml
   size-label:
     runs-on: ubuntu-latest
     steps:
