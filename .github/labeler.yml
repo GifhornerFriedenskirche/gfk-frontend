@@ -1,31 +1,26 @@
 ---
-ci/cd:
+ci-cd:
   - changed-files:
-    - any-glob-to-any-file:
-      - .github/**
+    - any-glob-to-any-file: '.github/**'
 
 infrastructure:
   - changed-files:
-    - any-glob-to-any-file:
-      - terraform/**
+    - any-glob-to-any-file: 'terraform/**'
 
 documentation:
   - changed-files:
-    - any-glob-to-any-file:
-      - docs/**
-      - guides/**
-      - README.md
-      - ./*.md
+    - any-glob-to-any-file: ['docs/**', 'guides/**', 'README.md', '**/*.md']
 
 app-basics:
-  - changed-files:
-    - src/app/*
+  - changed-files: 'src/app/*'
 
 app-core:
-  - changed-files:
-    - src/app/core/*
+  - changed-files: 'src/app/core/*'
 
 app-shared:
-  - changed-files:
-    - src/app/shared/*
+  - changed-files: 'src/app/shared/*'
+
+# Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
+feature:
+ - head-branch: ['^feature', 'feature']
 ...
