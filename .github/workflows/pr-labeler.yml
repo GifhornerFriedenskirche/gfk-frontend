@@ -1,16 +1,18 @@
 ---
-name: Pull Request Labeling
+name: "Pull Request Labeler"
 
 on:
   - pull_request_target
 
 jobs:
-  labeler:
+  triage:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/labeler@v5
+      - name: Label Pull Request
+        uses: actions/labeler@v5
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
   size-label:
     permissions:
