@@ -1,0 +1,34 @@
+---
+# Always validate the PR title, and ignore the commits
+titleOnly: true
+# By default types specified in commitizen/conventional-commit-types is used.
+# See: https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json
+# See also: https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3
+# You can override the valid types
+types:
+    # A new feature
+  - feat
+    # A bug fix 
+  - fix
+    # Documentation only changes
+  - docs
+    # Changes that do not affect the meaning of the code
+    # (white-space, formatting, missing semi-colons, etc)
+  - style 
+    # A code change that neither fixes a bug nor adds a feature
+  - refactor
+    # A code change that improves performance
+  - perf
+    # Adding missing tests or correcting existing tests
+  - test 
+    # Changes that affect the build system or external dependencies
+    # (example scopes: gulp, broccoli, npm)
+  - build
+    # Changes to our CI configuration files and scripts
+    # (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+  - ci
+    # Other changes that don't modify src or test files
+  - chore 
+    # Reverts a previous commit
+  - revert
+...
