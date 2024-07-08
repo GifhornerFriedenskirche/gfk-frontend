@@ -12,13 +12,16 @@ documentation:
     - any-glob-to-any-file: ['docs/**', 'guides/**', 'README.md', '**/*.md']
 
 app-basics:
-  - changed-files: 'src/app/*'
+  - changed-files: 
+    - any-glob-to-any-file: 'src/app/*'
 
 app-core:
-  - changed-files: 'src/app/core/*'
+  - changed-files:
+    - any-glob-to-any-file: 'src/app/core/*'
 
 app-shared:
-  - changed-files: 'src/app/shared/*'
+  - changed-files:
+    - any-glob-to-any-file: 'src/app/shared/*'
 
 # Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
 feature:
