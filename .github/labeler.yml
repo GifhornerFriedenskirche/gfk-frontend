@@ -1,24 +1,21 @@
 ---
 ci-cd:
-  - changed-files:
-    - '.github/**'
+  - '.github/**'
 
 infrastructure:
-  - changed-files:
-    - 'terraform/**'
+  - 'terraform/**'
 
 documentation:
-  - changed-files:
-    - ['docs/**', 'guides/**', 'README.md', '**/*.md']
+  - ['docs/**', 'guides/**', 'README.md', '**/*.md']
 
 app-basics:
-  - changed-files: 'src/app/*'
+  - 'src/app/*'
 
 app-core:
-  - changed-files: 'src/app/core/*'
+  - 'src/app/core/*'
 
 app-shared:
-  - changed-files: 'src/app/shared/*'
+  - 'src/app/shared/*'
 
 # Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
 feature:
