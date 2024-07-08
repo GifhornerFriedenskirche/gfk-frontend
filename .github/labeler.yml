@@ -1,15 +1,15 @@
 ---
 ci-cd:
   - changed-files:
-    - any-glob-to-any-file: '.github/**'
+    - '.github/**'
 
 infrastructure:
   - changed-files:
-    - any-glob-to-any-file: 'terraform/**'
+    - 'terraform/**'
 
 documentation:
   - changed-files:
-    - any-glob-to-any-file: ['docs/**', 'guides/**', 'README.md', '**/*.md']
+    - ['docs/**', 'guides/**', 'README.md', '**/*.md']
 
 app-basics:
   - changed-files: 'src/app/*'
