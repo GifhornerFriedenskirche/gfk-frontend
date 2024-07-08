@@ -31,9 +31,13 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        # set working directory to dist
+        local-dir: ./dist/gfk-frontend/
+        # delete all files in the server not present in the local directory
+        dangerous-clean-slate: true
+        log-level: minimal
 
     - name: List files in the repository after push
       working-directory: dist
       run: ls -la ${{ github.workspace }}
 ...
-      
