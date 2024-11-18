@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Hero } from '../interfaces/hero.interface';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroService {
-  private apiUrl =
+  private startseiteAPI =
     'https://content-dev.gifhorner-friedenskirche.de/api/content/item/Startseite';
-  private apiKey = 'API-43159f30f2b8492f50ee9dbedbf4dca649d67fb0';
+  constructor(private http: HttpClient, private baseService: BaseService) {}
 
-  constructor(private http: HttpClient) {}
-
-  getHeroData(): Observable<unknown> {
+  getHeroData(): Observable<Hero> {
     const headers = new HttpHeaders({
-      'api-key': this.apiKey,
+      'api-key': this.baseService.getAPIKey(),
     });
 
-    return this.http.get(this.apiUrl, { headers });
+    return this.http.get<Hero>(this.startseiteAPI, {
+      headers,
+    });
   }
 }

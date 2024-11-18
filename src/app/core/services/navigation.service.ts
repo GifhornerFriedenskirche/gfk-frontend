@@ -1,22 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BaseService } from './base.service';
+import { NavigationMenu } from '../interfaces/menu.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NavigationService {
-  private apiUrl =
+  private navigationPagesAPI =
+    'https://content-dev.gifhorner-friedenskirche.de/api/pages/pages';
+  private navigationMenusAPI =
     'https://content-dev.gifhorner-friedenskirche.de/api/pages/menus';
-  private apiKey = 'API-43159f30f2b8492f50ee9dbedbf4dca649d67fb0';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private baseService: BaseService) {}
 
-  getNavigation(): Observable<unknown> {
+  getNavigationPages(): Observable<unknown> {
     const headers = new HttpHeaders({
-      'api-key': this.apiKey,
+      'api-key': this.baseService.getAPIKey(),
     });
 
-    return this.http.get(this.apiUrl, { headers });
+    return this.http.get(this.navigationPagesAPI, { headers });
+  }
+  getNavigationMenus(): Observable<NavigationMenu[]> {
+    const headers = new HttpHeaders({
+      'api-key': this.baseService.getAPIKey(),
+    });
+
+    return this.http.get<NavigationMenu[]>(this.navigationMenusAPI, {
+      headers,
+    });
   }
 }
