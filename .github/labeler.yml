@@ -23,7 +23,16 @@ app-shared:
   - changed-files:
     - any-glob-to-any-file: 'src/app/shared/*'
 
-# Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
-feature:
- - head-branch: ['^feature', 'feature']
+feat:
+  - head-branch: ['^feat']
+
+fix:
+  - head-branch: ['^fix']
+
+docs:
+  - head-branch: ['^docs']
+
+misc:
+  - head-branch: ['^chore', '^build', '^test', '^ops', '^refactor', '^perf', '^style']
+
 ...
