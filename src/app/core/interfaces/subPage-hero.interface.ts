@@ -1,16 +1,15 @@
-export interface Hero {
-  // headerImage: unknown;
-  title: string;
+export interface SubHero {
+  breadcrumb_title: string;
   heroParagraph: string;
   HeroLink: string;
   heroLink: null;
   buttonTitle: string;
   text: string;
   link: null;
-  image: Image;
+  header_image: Header_image;
 }
 
-export interface Image {
+export interface Header_image {
   path: string;
   title: string;
   mime: string;
