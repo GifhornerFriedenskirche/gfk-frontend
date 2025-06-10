@@ -23,3 +23,24 @@
 .navbar .btn-ghost {
   transition: color 0.2s ease-in-out;
 }
+
+/* Enhanced hover effects */
+.navbar a:hover {
+  transform: translateY(-1px);
+}
+
+/* Fade in animation for navigation items */
+.menu li {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -15,7 +15,6 @@ import { API_ENDPOINTS, MESSAGES } from '../constants/app.constants';
   providedIn: 'root',
 })
 export class NavigationService {
-  private readonly navigationPagesAPI: string;
   private readonly navigationMenusAPI: string;
   
   // Cache for navigation menus
@@ -33,20 +32,8 @@ export class NavigationService {
     private readonly errorHandler: ErrorHandlerService
   ) {
     const baseApiUrl = this.baseService.getBaseApiUrl();
-    this.navigationPagesAPI = `${baseApiUrl}${API_ENDPOINTS.PAGES.PAGES}`;
-    this.navigationMenusAPI = `${baseApiUrl}${API_ENDPOINTS.PAGES.MENUS}`;
-  }
+    this.navigationMenusAPI = `${baseApiUrl}${API_ENDPOINTS.PAGES.MENUS}`;  }
 
-  /**
-   * Get navigation pages data
-   * @returns Observable of navigation pages
-   */
-  getNavigationPages(): Observable<unknown> {
-    return this.http.get(this.navigationPagesAPI)
-      .pipe(
-        catchError(error => this.errorHandler.handleHttpError(error))
-      );
-  }
   /**
    * Get navigation menus data with caching
    * @returns Observable of navigation menus

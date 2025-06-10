@@ -1,13 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-unsere-gemeinde',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './unsere-gemeinde.component.html',
-// })
-// export class UnsereGemeindeComponent {}
-
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -31,14 +21,13 @@ export class UnsereGemeindeComponent extends BasePageComponent implements OnInit
   }
 
   loadData(): void {
-    this.resetErrorState();
-
-    this.pageDataService.getUnsereGemeindeData().subscribe({
-      next: (heroData: unknown) => {
-        this.data = heroData as Hero;
+    this.resetErrorState();    this.pageDataService.getUnsereGemeindeData().subscribe({
+      next: (heroData: Hero) => {
+        this.data = heroData;
       },
       error: (error) => {
         this.setErrorState(error);
       },
-    });  }
+    });
+  }
 }
