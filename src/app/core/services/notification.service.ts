@@ -11,11 +11,11 @@ export interface Notification {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
   private notifications$ = new BehaviorSubject<Notification[]>([]);
-  
+
   getNotifications(): Observable<Notification[]> {
     return this.notifications$.asObservable();
   }
@@ -36,14 +36,19 @@ export class NotificationService {
     this.addNotification('info', title, message, duration);
   }
 
-  private addNotification(type: Notification['type'], title: string, message: string, duration: number): void {
+  private addNotification(
+    type: Notification['type'],
+    title: string,
+    message: string,
+    duration: number
+  ): void {
     const notification: Notification = {
       id: this.generateId(),
       type,
       title,
       message,
       duration,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     const currentNotifications = this.notifications$.value;
@@ -59,7 +64,9 @@ export class NotificationService {
 
   removeNotification(id: string): void {
     const currentNotifications = this.notifications$.value;
-    const filteredNotifications = currentNotifications.filter(n => n.id !== id);
+    const filteredNotifications = currentNotifications.filter(
+      (n) => n.id !== id
+    );
     this.notifications$.next(filteredNotifications);
   }
 

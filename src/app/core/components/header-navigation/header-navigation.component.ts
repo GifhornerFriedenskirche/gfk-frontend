@@ -22,7 +22,7 @@ export class HeaderNavigationComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
   hasError: boolean = false;
   errorMessage: string = '';
-  
+
   // Show loading only when there's no cached data
   showLoading$: Observable<boolean>;
 
@@ -32,18 +32,18 @@ export class HeaderNavigationComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.loading$ = this.loadingService.loading$;
-    
+
     // Combine loading state with cached data availability
     this.showLoading$ = combineLatest([
       this.loading$,
-      this.navigationService.navigationMenus$.pipe(startWith([]))
+      this.navigationService.navigationMenus$.pipe(startWith([])),
     ]).pipe(
       map(([isLoading, cachedMenus]) => isLoading && cachedMenus.length === 0)
     );
-    
+
     // Subscribe to cached navigation data
     this.subscription.add(
-      this.navigationService.navigationMenus$.subscribe(menus => {
+      this.navigationService.navigationMenus$.subscribe((menus) => {
         if (menus.length > 0) {
           this.menuItems = menus[0]?.links || [];
           this.hasError = false;

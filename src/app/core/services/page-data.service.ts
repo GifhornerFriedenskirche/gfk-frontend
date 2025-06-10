@@ -6,7 +6,11 @@ import { catchError, map } from 'rxjs/operators';
 import { Hero } from '../interfaces/hero.interface';
 import { BaseService } from './base.service';
 import { ErrorHandlerService } from './error-handler.service';
-import { API_ENDPOINTS, PAGE_SLUGS, MESSAGES } from '../constants/app.constants';
+import {
+  API_ENDPOINTS,
+  PAGE_SLUGS,
+  MESSAGES,
+} from '../constants/app.constants';
 
 /**
  * Service responsible for fetching page data from the API
@@ -18,11 +22,13 @@ export class PageDataService {
   private readonly apiEndpoint: string;
 
   constructor(
-    private readonly http: HttpClient, 
+    private readonly http: HttpClient,
     private readonly baseService: BaseService,
     private readonly errorHandler: ErrorHandlerService
   ) {
-    this.apiEndpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.CONTENT.ITEM}`;
+    this.apiEndpoint = `${this.baseService.getBaseApiUrl()}${
+      API_ENDPOINTS.CONTENT.ITEM
+    }`;
   }
 
   /**
@@ -35,11 +41,10 @@ export class PageDataService {
       throw new Error('Page slug is required');
     }
 
-    return this.http.get<Hero>(`${this.apiEndpoint}/${pageSlug}`)
-      .pipe(
-        map(data => this.validateHeroData(data)),
-        catchError(error => this.errorHandler.handleHttpError(error))
-      );
+    return this.http.get<Hero>(`${this.apiEndpoint}/${pageSlug}`).pipe(
+      map((data) => this.validateHeroData(data)),
+      catchError((error) => this.errorHandler.handleHttpError(error))
+    );
   }
 
   /**

@@ -16,23 +16,24 @@ import { API_ENDPOINTS, MESSAGES } from '../constants/app.constants';
 })
 export class NavigationService {
   private readonly navigationMenusAPI: string;
-  
+
   // Cache for navigation menus
   private navigationMenusCache$: Observable<NavigationMenu[]> | null = null;
   private navigationMenusSubject = new BehaviorSubject<NavigationMenu[]>([]);
-  
+
   /**
    * Observable that emits the cached navigation menus
    */
   public readonly navigationMenus$ = this.navigationMenusSubject.asObservable();
 
   constructor(
-    private readonly http: HttpClient, 
+    private readonly http: HttpClient,
     private readonly baseService: BaseService,
     private readonly errorHandler: ErrorHandlerService
   ) {
     const baseApiUrl = this.baseService.getBaseApiUrl();
-    this.navigationMenusAPI = `${baseApiUrl}${API_ENDPOINTS.PAGES.MENUS}`;  }
+    this.navigationMenusAPI = `${baseApiUrl}${API_ENDPOINTS.PAGES.MENUS}`;
+  }
 
   /**
    * Get navigation menus data with caching
@@ -45,12 +46,13 @@ export class NavigationService {
     }
 
     // Create and cache the request
-    this.navigationMenusCache$ = this.http.get<NavigationMenu[]>(this.navigationMenusAPI)
+    this.navigationMenusCache$ = this.http
+      .get<NavigationMenu[]>(this.navigationMenusAPI)
       .pipe(
-        map(data => this.validateNavigationMenus(data)),
-        tap(menus => this.navigationMenusSubject.next(menus)),
+        map((data) => this.validateNavigationMenus(data)),
+        tap((menus) => this.navigationMenusSubject.next(menus)),
         shareReplay(1), // Cache the result
-        catchError(error => {
+        catchError((error) => {
           // Reset cache on error to allow retry
           this.navigationMenusCache$ = null;
           return this.errorHandler.handleHttpError(error);

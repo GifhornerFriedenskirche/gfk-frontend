@@ -11,7 +11,10 @@ import { BasePageComponent } from '../../shared/components/base-page.component';
   imports: [CommonModule],
   templateUrl: './unsere-gemeinde.component.html',
 })
-export class UnsereGemeindeComponent extends BasePageComponent implements OnInit {
+export class UnsereGemeindeComponent
+  extends BasePageComponent
+  implements OnInit
+{
   data!: Hero;
 
   private readonly pageDataService = inject(PageDataService);
@@ -21,7 +24,8 @@ export class UnsereGemeindeComponent extends BasePageComponent implements OnInit
   }
 
   loadData(): void {
-    this.resetErrorState();    this.pageDataService.getUnsereGemeindeData().subscribe({
+    this.resetErrorState();
+    this.pageDataService.getUnsereGemeindeData().subscribe({
       next: (heroData: Hero) => {
         this.data = heroData;
       },

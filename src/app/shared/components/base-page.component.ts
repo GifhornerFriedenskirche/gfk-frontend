@@ -36,12 +36,13 @@ export abstract class BasePageComponent {
   protected resetErrorState(): void {
     this.hasError = false;
     this.errorMessage = '';
-  }  /**
+  }
+  /**
    * Set error state
    */
   protected setErrorState(error: unknown): void {
     this.hasError = true;
-    
+
     // Type-safe error message extraction
     if (this.isErrorWithMessage(error)) {
       this.errorMessage = error.message;
@@ -56,10 +57,12 @@ export abstract class BasePageComponent {
    * Type guard to check if error has a message property
    */
   private isErrorWithMessage(error: unknown): error is { message: string } {
-    return error !== null && 
-           typeof error === 'object' && 
-           'message' in error && 
-           typeof (error as { message: unknown }).message === 'string';
+    return (
+      error !== null &&
+      typeof error === 'object' &&
+      'message' in error &&
+      typeof (error as { message: unknown }).message === 'string'
+    );
   }
 
   /**

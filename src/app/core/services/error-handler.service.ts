@@ -13,11 +13,11 @@ export interface AppError {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ErrorHandlerService {
   private notificationService = inject(NotificationService);
-  
+
   handleHttpError(error: HttpErrorResponse): Observable<never> {
     const appError: AppError = {
       message: this.getErrorMessage(error),
@@ -25,15 +25,15 @@ export class ErrorHandlerService {
       statusText: error.statusText,
       url: error.url || undefined,
       timestamp: new Date(),
-      type: this.getErrorType(error)
+      type: this.getErrorType(error),
     };
 
     // Log error to console (in production, send to logging service)
     console.error('HTTP Error occurred:', appError);
-    
+
     // Show user-friendly error notification
     this.showErrorNotification(appError);
-    
+
     return throwError(() => appError);
   }
 
@@ -64,7 +64,9 @@ export class ErrorHandlerService {
     }
   }
 
-  private getErrorType(error: HttpErrorResponse): 'http' | 'client' | 'network' {
+  private getErrorType(
+    error: HttpErrorResponse
+  ): 'http' | 'client' | 'network' {
     if (error.status === 0) {
       return 'network';
     } else if (error.status >= 400 && error.status < 500) {
@@ -76,22 +78,19 @@ export class ErrorHandlerService {
 
   private showErrorNotification(error: AppError): void {
     // Show notification to user
-    this.notificationService.showError(
-      'Fehler',
-      error.message
-    );
+    this.notificationService.showError('Fehler', error.message);
   }
 
   handleClientError(error: Error): Observable<never> {
     const appError: AppError = {
       message: error.message || 'Ein unerwarteter Fehler ist aufgetreten.',
       timestamp: new Date(),
-      type: 'client'
+      type: 'client',
     };
 
     console.error('Client Error occurred:', appError);
     this.showErrorNotification(appError);
-    
+
     return throwError(() => appError);
   }
 }

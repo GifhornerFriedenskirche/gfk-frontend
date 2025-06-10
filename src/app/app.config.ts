@@ -17,11 +17,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(
-      withFetch(), 
+      withFetch(),
       withInterceptors([
         loadingInterceptor, // First - handle loading
-        apiKeyInterceptor,  // Second - add API key
-        errorInterceptor    // Last - handle errors
+        apiKeyInterceptor, // Second - add API key
+        errorInterceptor, // Last - handle errors
       ])
     ),
   ],

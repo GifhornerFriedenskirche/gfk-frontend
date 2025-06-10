@@ -12,7 +12,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       // Hide loading spinner on error
       loadingService.hideLoading();
-      
+
       // Handle the error
       return errorHandler.handleHttpError(error);
     })

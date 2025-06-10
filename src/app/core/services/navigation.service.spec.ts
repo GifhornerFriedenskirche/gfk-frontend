@@ -11,11 +11,7 @@ describe('NavigationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        NavigationService,
-        BaseService,
-        ErrorHandlerService
-      ]
+      providers: [NavigationService, BaseService, ErrorHandlerService],
     });
     service = TestBed.inject(NavigationService);
   });

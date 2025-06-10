@@ -4,15 +4,31 @@
 </div>
 
 <!-- Error state with fade animation -->
-<div *ngIf="hasError && (loading$ | async) === false" class="hero min-h-screen bg-base-200 animate-fade-in">
+<div
+  *ngIf="hasError && (loading$ | async) === false"
+  class="hero min-h-screen bg-base-200 animate-fade-in"
+>
   <div class="hero-content text-center">
     <div class="max-w-md">
       <div class="text-error mb-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-16 w-16 mx-auto mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+          />
         </svg>
       </div>
-      <h1 class="text-3xl font-bold text-error mb-4">Oops! Etwas ist schiefgelaufen</h1>
+      <h1 class="text-3xl font-bold text-error mb-4">
+        Oops! Etwas ist schiefgelaufen
+      </h1>
       <p class="mb-6 text-base-content">{{ errorMessage }}</p>
       <button class="btn btn-primary" (click)="retryLoad()">
         Erneut versuchen
@@ -22,7 +38,13 @@
 </div>
 
 <!-- Content with fade animation -->
-<div *ngIf="data && (loading$ | async) === false && !hasError" class="hero min-h-screen animate-fade-in" [ngStyle]="{ 'background-image': 'url(' + getFullImagePath(data.image.path) + ')' }">
+<div
+  *ngIf="data && (loading$ | async) === false && !hasError"
+  class="hero min-h-screen animate-fade-in"
+  [ngStyle]="{
+    'background-image': 'url(' + getFullImagePath(data.image.path) + ')'
+  }"
+>
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-neutral-content text-center">
     <div class="max-w-md">
@@ -30,7 +52,16 @@
       <p class="mb-5">
         {{ data.text }}
       </p>
-      <button class="btn btn-primary">{{ data.buttonTitle }}</button>
+      <button
+        class="btn bg-orange-500 hover:bg-orange-600 border-orange-500 hover:border-orange-600 text-white"
+      >
+        {{ data.buttonTitle }}
+      </button>
     </div>
   </div>
 </div>
+
+<!-- Homepage Content Section -->
+<app-homepage-content
+  *ngIf="data && (loading$ | async) === false && !hasError"
+></app-homepage-content>
