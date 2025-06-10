@@ -8,34 +8,33 @@
 // })
 // export class UnsereGemeindeComponent {}
 
-import { Component, OnInit } from '@angular/core';
-// import { HeroService } from '../../core/services/hero.service';
+import { Component, OnInit, inject } from '@angular/core';
 import { Hero } from '../../core/interfaces/hero.interface';
 import { CommonModule } from '@angular/common';
 import { BaseService } from '../../core/services/base.service';
-import { PageService } from '../../core/services/page.service';
+import { PageDataService } from '../../core/services/page-data.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-unsere-gemeinde',
   standalone: true,
   imports: [CommonModule],
-  providers: [PageService],
   templateUrl: './unsere-gemeinde.component.html',
 })
 export class UnsereGemeindeComponent implements OnInit {
-  constructor(
-    // private heroService: HeroService,
-    private pageService: PageService,
-    private baseService: BaseService
-  ) {}
   data!: Hero;
+  private pageDataService = inject(PageDataService);
+  private baseService = inject(BaseService);
+
+  constructor() {}
 
   ngOnInit(): void {
-    this.pageService.getHeroData().subscribe({
-      next: (heroData: Hero) => {
+    this.pageDataService.getUnsereGemeindeData().subscribe({
+      next: (heroData: unknown) => {
         console.log('heroData', heroData);
-        this.data = heroData;
-        // this.heroData = data;
+        this.data = heroData as Hero;
+      },
+      error: (error) => {
+        console.error('Error loading page data:', error);
       },
     });
   }

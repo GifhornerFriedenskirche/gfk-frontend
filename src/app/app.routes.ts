@@ -1,12 +1,30 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home.component';
-import { HeaderNavigationComponent } from './core/components/header-navigation/header-navigation.component';
-import { UnsereGemeindeComponent } from './features/unsere-gemeinde/unsere-gemeinde.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent }, // Standardroute
-  { path: 'startseite', component: HomeComponent }, // Standardroute
-  { path: 'unsere-gemeinde', component: UnsereGemeindeComponent },
-  { path: 'header', component: HeaderNavigationComponent },
-  // Weitere Routen hinzufügen
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'startseite',
+    loadComponent: () =>
+      import('./features/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'unsere-gemeinde',
+    loadChildren: () =>
+      import('./features/unsere-gemeinde/unsere-gemeinde.routes').then(
+        (m) => m.unsereGemeindeRoutes
+      ),
+  },
+  // Alternative: If you want to group home routes in the future
+  // {
+  //   path: 'home',
+  //   loadChildren: () => import('./features/home/home.routes').then(m => m.homeRoutes)
+  // },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

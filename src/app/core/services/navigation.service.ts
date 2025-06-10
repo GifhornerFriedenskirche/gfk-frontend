@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseService } from './base.service';
 import { NavigationMenu } from '../interfaces/menu.interface';
@@ -8,27 +8,18 @@ import { NavigationMenu } from '../interfaces/menu.interface';
   providedIn: 'root',
 })
 export class NavigationService {
-  private navigationPagesAPI =
-    'https://content-dev.gifhorner-friedenskirche.de/api/pages/pages';
-  private navigationMenusAPI =
-    'https://content-dev.gifhorner-friedenskirche.de/api/pages/menus';
+  private navigationPagesAPI = `${this.baseService.getBaseApiUrl()}/api/pages/pages`;
+  private navigationMenusAPI = `${this.baseService.getBaseApiUrl()}/api/pages/menus`;
 
   constructor(private http: HttpClient, private baseService: BaseService) {}
 
   getNavigationPages(): Observable<unknown> {
-    const headers = new HttpHeaders({
-      'api-key': this.baseService.getAPIKey(),
-    });
-
-    return this.http.get(this.navigationPagesAPI, { headers });
+    // No need to manually add headers - interceptor handles it
+    return this.http.get(this.navigationPagesAPI);
   }
-  getNavigationMenus(): Observable<NavigationMenu[]> {
-    const headers = new HttpHeaders({
-      'api-key': this.baseService.getAPIKey(),
-    });
 
-    return this.http.get<NavigationMenu[]>(this.navigationMenusAPI, {
-      headers,
-    });
+  getNavigationMenus(): Observable<NavigationMenu[]> {
+    // No need to manually add headers - interceptor handles it
+    return this.http.get<NavigationMenu[]>(this.navigationMenusAPI);
   }
 }
