@@ -1,8 +1,8 @@
 <!-- Loading skeleton -->
-<app-navigation-skeleton *ngIf="loading$ | async"></app-navigation-skeleton>
+<app-navigation-skeleton *ngIf="showLoading$ | async"></app-navigation-skeleton>
 
 <!-- Error state -->
-<div *ngIf="hasError && (loading$ | async) === false" class="navbar bg-error text-error-content">
+<div *ngIf="hasError && (showLoading$ | async) === false" class="navbar bg-error text-error-content">
   <div class="navbar-start">
     <span class="text-sm">Navigation konnte nicht geladen werden</span>
   </div>
@@ -14,7 +14,7 @@
 </div>
 
 <!-- Normal navigation -->
-<div *ngIf="!hasError && (loading$ | async) === false" class="navbar bg-base-100">
+<div *ngIf="!hasError && (showLoading$ | async) === false" class="navbar bg-base-100">
   <div class="navbar-start">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">

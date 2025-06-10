@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map, tap, shareReplay } from 'rxjs/operators';
 
 import { BaseService } from './base.service';
 import { ErrorHandlerService } from './error-handler.service';
@@ -17,6 +17,15 @@ import { API_ENDPOINTS, MESSAGES } from '../constants/app.constants';
 export class NavigationService {
   private readonly navigationPagesAPI: string;
   private readonly navigationMenusAPI: string;
+  
+  // Cache for navigation menus
+  private navigationMenusCache$: Observable<NavigationMenu[]> | null = null;
+  private navigationMenusSubject = new BehaviorSubject<NavigationMenu[]>([]);
+  
+  /**
+   * Observable that emits the cached navigation menus
+   */
+  public readonly navigationMenus$ = this.navigationMenusSubject.asObservable();
 
   constructor(
     private readonly http: HttpClient, 
@@ -38,17 +47,46 @@ export class NavigationService {
         catchError(error => this.errorHandler.handleHttpError(error))
       );
   }
-
   /**
-   * Get navigation menus data
+   * Get navigation menus data with caching
    * @returns Observable of navigation menus
    */
   getNavigationMenus(): Observable<NavigationMenu[]> {
-    return this.http.get<NavigationMenu[]>(this.navigationMenusAPI)
+    // Return cached data if available
+    if (this.navigationMenusCache$) {
+      return this.navigationMenusCache$;
+    }
+
+    // Create and cache the request
+    this.navigationMenusCache$ = this.http.get<NavigationMenu[]>(this.navigationMenusAPI)
       .pipe(
         map(data => this.validateNavigationMenus(data)),
-        catchError(error => this.errorHandler.handleHttpError(error))
+        tap(menus => this.navigationMenusSubject.next(menus)),
+        shareReplay(1), // Cache the result
+        catchError(error => {
+          // Reset cache on error to allow retry
+          this.navigationMenusCache$ = null;
+          return this.errorHandler.handleHttpError(error);
+        })
       );
+
+    return this.navigationMenusCache$;
+  }
+
+  /**
+   * Get cached navigation menus (synchronous access to last cached value)
+   * @returns Current cached navigation menus
+   */
+  getCachedNavigationMenus(): NavigationMenu[] {
+    return this.navigationMenusSubject.value;
+  }
+
+  /**
+   * Clear navigation cache (useful for refresh scenarios)
+   */
+  clearCache(): void {
+    this.navigationMenusCache$ = null;
+    this.navigationMenusSubject.next([]);
   }
 
   /**

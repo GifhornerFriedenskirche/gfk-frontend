@@ -1,0 +1,25 @@
+/* Smooth transitions for navigation */
+.navbar {
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar a {
+  transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+  opacity: 1;
+}
+
+/* Ensure menu items appear smoothly */
+.menu li a {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Loading state transitions */
+.navbar-loading {
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Prevent text flicker during route changes */
+.navbar .btn-ghost {
+  transition: color 0.2s ease-in-out;
+}
