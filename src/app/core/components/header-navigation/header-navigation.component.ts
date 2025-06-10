@@ -1,56 +1,53 @@
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { HttpClientModule } from '@angular/common/http';
-// import { NavigationService } from '../../services/navigation.service';
-
-// @Component({
-//   selector: 'app-header-navigation',
-//   standalone: true,
-//   imports: [CommonModule, HttpClientModule],
-//   providers: [NavigationService],
-//   templateUrl: './header-navigation.component.html',
-// })
-// export class HeaderNavigationComponent implements OnInit {
-//   constructor(private navigationService: NavigationService) {}
-
-//   ngOnInit(): void {
-//     this.navigationService.getNavigationPages().subscribe((data) => {
-//       console.log('getNavigationPages', data);
-//     });
-//     this.navigationService.getNavigationMenus().subscribe((data) => {
-//       console.log('getNavigationMenus', data);
-//     });
-//   }
-// }
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationService } from '../../services/navigation.service';
-import { Link, NavigationMenu } from '../../interfaces/menu.interface';
 import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
+
+import { NavigationService } from '../../services/navigation.service';
+import { LoadingService } from '../../services/loading.service';
+import { Link, NavigationMenu } from '../../interfaces/menu.interface';
+import { NavigationSkeletonComponent } from '../../../shared/components/navigation-skeleton.component';
+import { MESSAGES } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-header-navigation',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NavigationSkeletonComponent],
   templateUrl: './header-navigation.component.html',
 })
 export class HeaderNavigationComponent implements OnInit {
   menuItems: Link[] = [];
+  loading$: Observable<boolean>;
+  hasError: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private navigationService: NavigationService) {}
+  private readonly navigationService = inject(NavigationService);
+  private readonly loadingService = inject(LoadingService);
+
+  constructor() {
+    this.loading$ = this.loadingService.loading$;
+  }
 
   ngOnInit(): void {
-    console.log('🧭 HeaderNavigation ngOnInit started');
+    this.loadNavigationData();
+  }
+
+  private loadNavigationData(): void {
+    this.hasError = false;
+    this.errorMessage = '';
 
     this.navigationService.getNavigationMenus().subscribe({
       next: (data: NavigationMenu[]) => {
-        console.log('✅ Navigation data received:', data);
-        this.menuItems = data[0].links;
-      },
-      error: (error) => {
-        console.error('❌ Navigation error:', error);
-        console.error('❌ Navigation error details:', error.error);
+        this.menuItems = data[0]?.links || [];
+        this.hasError = false;
+      },      error: (error) => {
+        this.hasError = true;
+        this.errorMessage = error.message || MESSAGES.ERROR.NAVIGATION_LOAD;
+        this.menuItems = [];
       },
     });
+  }
+  retryLoad(): void {
+    this.loadNavigationData();
   }
 }

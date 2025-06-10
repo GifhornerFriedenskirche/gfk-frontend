@@ -1,24 +1,19 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { API_ENDPOINTS } from '../constants/app.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BaseService {
-  private baseImagePathUrl = `${environment.apiBaseUrl}/storage/uploads/`;
-
-  constructor() {}
+  private readonly baseImagePathUrl = `${environment.apiBaseUrl}${API_ENDPOINTS.STORAGE.UPLOADS}/`;
+  private readonly baseApiUrl = environment.apiBaseUrl;
 
   getBaseImagePathUrl(): string {
     return this.baseImagePathUrl;
   }
 
   getBaseApiUrl(): string {
-    return environment.apiBaseUrl;
-  }
-
-  // Add this back temporarily
-  getAPIKey(): string {
-    return environment.apiKey;
+    return this.baseApiUrl;
   }
 }

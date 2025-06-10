@@ -1,40 +1,36 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 import { Hero } from '../../core/interfaces/hero.interface';
-import { CommonModule } from '@angular/common';
-import { BaseService } from '../../core/services/base.service';
 import { PageDataService } from '../../core/services/page-data.service';
+import { HeroSkeletonComponent } from '../../shared/components/hero-skeleton.component';
+import { BasePageComponent } from '../../shared/components/base-page.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeroSkeletonComponent],
   templateUrl: './home.component.html',
 })
-export class HomeComponent implements OnInit {
-  data!: Hero;
-  private pageDataService = inject(PageDataService);
-  private baseService = inject(BaseService);
+export class HomeComponent extends BasePageComponent implements OnInit {
+  data: Hero | null = null;
+
+  private readonly pageDataService = inject(PageDataService);
 
   ngOnInit(): void {
-    console.log('Environment API Key:', environment.apiKey);
-    console.log('Base API URL:', this.baseService.getBaseApiUrl());
+    this.loadData();
+  }
+  loadData(): void {
+    this.resetErrorState();
 
     this.pageDataService.getStartseiteData().subscribe({
       next: (heroData: Hero) => {
-        console.log('Success:', heroData);
         this.data = heroData;
       },
       error: (error) => {
-        console.error('Error details:', error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.message);
+        this.setErrorState(error);
+        this.data = null;
       },
     });
-  }
-
-  getFullImagePath(path: string): string {
-    return `${this.baseService.getBaseImagePathUrl()}${path}`;
   }
 }
