@@ -1,11 +1,11 @@
 <!-- Loading skeleton with fade animation -->
-<div *ngIf="loading$ | async" class="animate-fade-in">
+<div *ngIf="isLoading" class="animate-fade-in">
   <app-hero-skeleton></app-hero-skeleton>
 </div>
 
 <!-- Error state with fade animation -->
 <div
-  *ngIf="hasError && (loading$ | async) === false"
+  *ngIf="hasError && !isLoading"
   class="hero min-h-screen bg-base-200 animate-fade-in"
 >
   <div class="hero-content text-center">
@@ -39,7 +39,7 @@
 
 <!-- Content with fade animation -->
 <div
-  *ngIf="data && (loading$ | async) === false && !hasError"
+  *ngIf="data && !isLoading && !hasError"
   class="hero min-h-screen animate-fade-in"
   [ngStyle]="{
     'background-image': 'url(' + getFullImagePath(data.image.path) + ')'
@@ -63,5 +63,6 @@
 
 <!-- Homepage Content Section -->
 <app-homepage-content
-  *ngIf="data && (loading$ | async) === false && !hasError"
+  *ngIf="showHomepageContent && data && !isLoading && !hasError"
+  [initialLoadComplete]="true"
 ></app-homepage-content>

@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http'; // Added import
 
 import { Hero } from '../../core/interfaces/hero.interface';
 import { PageDataService } from '../../core/services/page-data.service';
@@ -20,16 +21,20 @@ export class UnsereGemeindeComponent
   private readonly pageDataService = inject(PageDataService);
 
   ngOnInit(): void {
-    this.loadData();
+    // Defer loadData to the next macrotask (event loop tick)
+    // to prevent ExpressionChangedAfterItHasBeenCheckedError.
+    setTimeout(() => this.loadData(), 0);
   }
 
   loadData(): void {
     this.resetErrorState();
-    this.pageDataService.getUnsereGemeindeData().subscribe({
+    this.pageDataService.getPageData('unsere-gemeinde').subscribe({
+      // Changed to getPageData with slug
       next: (heroData: Hero) => {
         this.data = heroData;
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
+        // Added HttpErrorResponse type
         this.setErrorState(error);
       },
     });

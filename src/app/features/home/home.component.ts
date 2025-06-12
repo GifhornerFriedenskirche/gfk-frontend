@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Hero } from '../../core/interfaces/hero.interface';
 import { PageDataService } from '../../core/services/page-data.service';
@@ -15,6 +16,8 @@ import { HomepageContentComponent } from './components/homepage-content.componen
 })
 export class HomeComponent extends BasePageComponent implements OnInit {
   data: Hero | null = null;
+  showHomepageContent = false;
+  isLoading = false; // Local loading state
 
   private readonly pageDataService = inject(PageDataService);
 
@@ -23,14 +26,24 @@ export class HomeComponent extends BasePageComponent implements OnInit {
   }
   loadData(): void {
     this.resetErrorState();
-
-    this.pageDataService.getStartseiteData().subscribe({
+    this.showHomepageContent = false;
+    this.isLoading = true;
+    this.pageDataService.getHomePageData().subscribe({
       next: (heroData: Hero) => {
-        this.data = heroData;
+        // Use setTimeout to ensure state changes happen after current change detection cycle
+        setTimeout(() => {
+          this.data = heroData;
+          this.isLoading = false;
+          this.showHomepageContent = true;
+        });
       },
-      error: (error) => {
-        this.setErrorState(error);
-        this.data = null;
+      error: (error: HttpErrorResponse) => {
+        // Use setTimeout to ensure state changes happen after current change detection cycle
+        setTimeout(() => {
+          this.setErrorState(error);
+          this.data = null;
+          this.isLoading = false;
+        });
       },
     });
   }
