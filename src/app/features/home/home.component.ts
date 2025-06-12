@@ -5,7 +5,7 @@ import { Hero } from '../../core/interfaces/hero.interface';
 import { PageDataService } from '../../core/services/page-data.service';
 import { HeroSkeletonComponent } from '../../shared/components/hero-skeleton.component';
 import { BasePageComponent } from '../../shared/components/base-page.component';
-import { HomepageContentComponent } from './homepage-content.component';
+import { HomepageContentComponent } from './components/homepage-content.component';
 
 @Component({
   selector: 'app-home',
