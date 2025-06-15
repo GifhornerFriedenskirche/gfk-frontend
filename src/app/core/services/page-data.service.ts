@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { Hero } from '../interfaces/hero.interface';
-import { HomepageContentApiResponse } from '../interfaces/homepage-content.interface'; // Added import
+import { HomepageCardItem, HomepageContentApiResponse } from '../interfaces/homepage-content.interface'; // Added import
 import { BaseService } from './base.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { API_ENDPOINTS, PAGE_SLUGS } from '../constants/app.constants';
@@ -50,17 +50,44 @@ export class PageDataService {
    */
   getHomePageData(): Observable<Hero> {
     return this.getPageData(PAGE_SLUGS.HOME);
-  }
-
-  /**
+  }  /**
    * Get homepage content data
    * @returns Observable of HomepageContentApiResponse
-   */
-  getHomepageContentData(): Observable<HomepageContentApiResponse> {
+   */  getHomepageContentData(): Observable<HomepageContentApiResponse> {
     const modelName = 'homepageContentModel';
-    return this.http
-      .get<HomepageContentApiResponse>(`${this.apiEndpoint}/${modelName}`)
-      .pipe(catchError((error) => this.errorHandler.handleHttpError(error)));
+    // Use the correct ITEMS endpoint instead of ITEM
+    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.CONTENT.ITEMS}`;
+
+    return this.http.get<unknown>(`${endpoint}/${modelName}`).pipe(
+      map((response: unknown) => {
+        console.log('API response for homepage content:', response);
+        
+        // Since we now know the response is an array of tile objects
+        if (Array.isArray(response)) {
+          console.log('Response is an array with', response.length, 'tiles');
+          return { tiles: response as HomepageCardItem[] } as HomepageContentApiResponse;
+        } else if (response && typeof response === 'object') {
+          const responseObj = response as Record<string, unknown>;
+          // Check if response has entries array
+          if (responseObj['entries'] && Array.isArray(responseObj['entries'])) {
+            const entries = responseObj['entries'] as unknown[];
+            console.log('Response has entries array with', entries.length, 'tiles');
+            return { tiles: entries as HomepageCardItem[] } as HomepageContentApiResponse;
+          } 
+          // Check if response already has tiles array
+          else if (responseObj['tiles'] && Array.isArray(responseObj['tiles'])) {
+            const tiles = responseObj['tiles'] as unknown[];
+            console.log('Response already has tiles array with', tiles.length, 'items');
+            return { tiles: tiles as HomepageCardItem[] } as HomepageContentApiResponse;
+          }
+        }
+        
+        // Default case if response format doesn't match any expected pattern
+        console.log('Unexpected response format, returning empty tiles array');
+        return { tiles: [] } as HomepageContentApiResponse;
+      }),
+      catchError((error) => this.errorHandler.handleHttpError(error))
+    );
   }
 
   // Removed validateHeroData method as it's not defined and not relevant to the current task.

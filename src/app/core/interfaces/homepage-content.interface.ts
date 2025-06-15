@@ -2,14 +2,32 @@ export interface HomepageImage {
   path: string;
   title: string;
   mime: string;
+  size?: number;
+  width?: number;
+  height?: number;
 }
 
 export interface HomepageCardItem {
+  // Properties matching the exact API response
   tiletitle: string;
   tileText: string;
-  tileImage: HomepageImage;
+  tileImage?: HomepageImage;
+  // Support for alternative property names that might be in the API response
+  title?: string;
+  text?: string;
+  description?: string;
+  image?: HomepageImage;
+  tileLink?: string | null;
+  // Standard CMS properties
+  _id: string;
+  _created: number;
+  _modified: number;
+  _state: number;
+  _mby?: string;
+  _by?: string;
 }
 
-// This alias assumes the API endpoint for 'homepageContentModel' directly returns a single card item.
-// If it were to return an array or a more complex object, this would need to be adjusted.
-export type HomepageContentApiResponse = HomepageCardItem;
+// Updated to support multiple cards
+export interface HomepageContentApiResponse {
+  tiles: HomepageCardItem[];
+}

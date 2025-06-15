@@ -6,6 +6,7 @@
 export const API_ENDPOINTS = {
   CONTENT: {
     ITEM: '/api/content/item',
+    ITEMS: '/api/content/items',
   },
   PAGES: {
     PAGES: '/api/pages/pages',
