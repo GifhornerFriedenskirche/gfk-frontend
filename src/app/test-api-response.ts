@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
   selector: 'app-test-api',
   standalone: true,
   imports: [CommonModule],
-  template: '<div>API Test</div>'
+  template: '<div>API Test</div>',
 })
 export class TestApiComponent implements OnInit {
   constructor(private http: HttpClient) {}
@@ -21,13 +21,13 @@ export class TestApiComponent implements OnInit {
     console.log('Testing /api/content/item endpoint:');
     this.http.get(endpointItem).subscribe({
       next: (response) => console.log('Item response:', response),
-      error: (err) => console.error('Item error:', err)
+      error: (err) => console.error('Item error:', err),
     });
 
     console.log('Testing /api/content/items endpoint:');
     this.http.get(endpointItems).subscribe({
       next: (response) => console.log('Items response:', response),
-      error: (err) => console.error('Items error:', err)
+      error: (err) => console.error('Items error:', err),
     });
   }
 }
