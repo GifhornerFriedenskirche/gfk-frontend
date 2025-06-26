@@ -1,14 +1,217 @@
-<div *ngIf="data">
-  <!-- Header-Bereich -->
-  <!-- <div
-    class="hero min-h-screen"
-    [ngStyle]="{
-      'background-image': 'url(' + data.headerImage.path + ')'
-    }"
-  >
-    <div class="hero-overlay bg-opacity-60"></div>
-    <div class="hero-content text-center text-neutral-content">
-      <h1 class="text-5xl font-bold">{{ data.title }}</h1>
+<!-- Loading state -->
+<div *ngIf="isLoading" class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+</div>
+
+<!-- Error state -->
+<div *ngIf="hasError && !isLoading" class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="text-center">
+    <div class="text-red-500 mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+      </svg>
     </div>
-  </div> -->
+    <h1 class="text-2xl font-bold text-gray-900 mb-4">Fehler beim Laden der Seite</h1>
+    <p class="text-gray-600 mb-6">{{ errorMessage }}</p>
+    <button 
+      (click)="loadData()" 
+      class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg transition-colors"
+    >
+      Erneut versuchen
+    </button>
+  </div>
+</div>
+
+<!-- Main content -->
+<div *ngIf="pageData && !isLoading && !hasError">
+  <!-- Hero Section -->
+  <div class="relative h-[70vh] w-full overflow-hidden">
+    <div 
+      class="absolute inset-0 bg-cover bg-center"
+      [ngStyle]="{
+        'background-image': pageData.data.data.header_image ? 'url(' + getFullImagePath(pageData.data.data.header_image.path) + ')' : 'linear-gradient(to right, #ff8800, #ff4400)'
+      }"
+    >
+      <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    </div>
+    
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="text-center text-white z-10">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">{{ pageData.title }}</h1>
+        
+        <!-- Breadcrumb Navigation -->
+        <div class="text-lg md:text-xl font-light mb-8">
+          <a href="/" class="text-orange-400 hover:text-orange-300">Home</a>
+          <span class="mx-3 text-orange-400">/</span>
+          <span>{{ pageData.data.data.breadcrumb_title || pageData.title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layout Components (Before) -->
+  <div *ngIf="pageData.data.layout.before && pageData.data.layout.before.length > 0" class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div *ngFor="let component of pageData.data.layout.before" class="mb-8">
+        
+        <!-- Button Component -->
+        <div *ngIf="component.component === 'button'" class="text-center">
+          <a 
+            [href]="component.data.url || '#'" 
+            class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            [target]="component.data.target === '_blank' ? '_blank' : '_self'"
+          >
+            {{ component.data.caption || component.label }}
+          </a>
+        </div>
+        
+        <!-- Image Component -->
+        <div *ngIf="component.component === 'image'" class="text-center">
+          <img 
+            *ngIf="component.data.asset"
+            [src]="getFullImagePath(component.data.asset.path)" 
+            [alt]="component.data.asset.title || component.label" 
+            class="max-w-full h-auto rounded-lg shadow-lg mx-auto"
+          >
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-900 mb-6">{{ pageData.title }}</h2>
+          <p class="text-xl text-gray-700 leading-relaxed">
+            Willkommen in unserer lebendigen Gemeinde! Hier findest du Menschen jeden Alters, die gemeinsam ihren Glauben leben und feiern.
+          </p>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <!-- Left Column - Stage Image -->
+          <div class="relative overflow-hidden rounded-lg shadow-xl">
+            <img 
+              *ngIf="pageData.data.data.stageImage"
+              [src]="getFullImagePath(pageData.data.data.stageImage.path)" 
+              [alt]="pageData.data.data.stageImage.title || pageData.title"
+              class="w-full h-full object-cover"
+            >
+            <!-- Fallback if no stage image -->
+            <div *ngIf="!pageData.data.data.stageImage" class="bg-orange-100 h-64 flex items-center justify-center">
+              <div class="text-center text-orange-500 p-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p>Friedenskirche</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Content -->
+          <div class="flex flex-col justify-center">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-6">Willkommen in unserer Gemeinde</h3>
+            <div class="prose prose-lg">
+              <p class="mb-4">
+                Wir sind eine lebendige Gemeinschaft, die gemeinsam ihren Glauben lebt und feiert. Bei uns findest du Menschen jeden Alters und aus verschiedenen Hintergründen, vereint durch den Glauben an Jesus Christus.
+              </p>
+              <p class="mb-4">
+                Unsere Gottesdienste, Hauskreise, Kinder- und Jugendarbeit sowie verschiedene Veranstaltungen bieten vielfältige Möglichkeiten, Gemeinschaft zu erleben und den Glauben zu vertiefen.
+              </p>
+              <p>
+                Wir laden dich herzlich ein, Teil unserer Gemeinde zu werden und gemeinsam mit uns den Weg des Glaubens zu gehen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="py-16 bg-orange-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Unsere Werte</h2>
+        <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+          Diese Kernwerte prägen unsere Gemeinde und begleiten uns in unserem gemeinsamen Glaubensleben.
+        </p>
+      </div>
+      
+      <!-- Values Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <!-- Value Card 1 -->
+        <div class="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow">
+          <div class="text-orange-500 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-900">Gemeinschaft</h3>
+          <p class="text-gray-700">
+            Wir leben Gemeinschaft und unterstützen einander im Alltag und im Glauben.
+          </p>
+        </div>
+        
+        <!-- Value Card 2 -->
+        <div class="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow">
+          <div class="text-orange-500 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-900">Bibelorientiert</h3>
+          <p class="text-gray-700">
+            Die Bibel ist unsere Grundlage für den Glauben und das tägliche Leben als Christen.
+          </p>
+        </div>
+        
+        <!-- Value Card 3 -->
+        <div class="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow">
+          <div class="text-orange-500 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-900">Nächstenliebe</h3>
+          <p class="text-gray-700">
+            Wir setzen uns für andere ein und teilen die Liebe Gottes in Wort und Tat.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layout Components (After) -->
+  <div *ngIf="pageData.data.layout.after && pageData.data.layout.after.length > 0" class="py-12 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <div *ngFor="let component of pageData.data.layout.after" class="mb-8">
+        
+        <!-- Button Component -->
+        <div *ngIf="component.component === 'button'" class="text-center">
+          <a 
+            [href]="component.data.url || '#'" 
+            class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            [target]="component.data.target === '_blank' ? '_blank' : '_self'"
+          >
+            {{ component.data.caption || component.label }}
+          </a>
+        </div>
+        
+        <!-- Image Component -->
+        <div *ngIf="component.component === 'image'" class="text-center">
+          <img 
+            *ngIf="component.data.asset"
+            [src]="getFullImagePath(component.data.asset.path)" 
+            [alt]="component.data.asset.title || component.label" 
+            class="max-w-full h-auto rounded-lg shadow-lg mx-auto"
+          >
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </div>

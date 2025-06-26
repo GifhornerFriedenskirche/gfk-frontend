@@ -1,11 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http'; // Added import
+import { HttpErrorResponse } from '@angular/common/http';
 
-import { Hero } from '../../core/interfaces/hero.interface';
-import { PageDataService } from '../../core/services/page-data.service';
+import { PagesService } from '../../core/services/pages.service';
 import { BasePageComponent } from '../../shared/components/base-page.component';
-import { PAGE_SLUGS } from '../../core/constants/app.constants';
+import { PageApiResponse } from '../../core/interfaces/page.interface';
 
 @Component({
   selector: 'app-unsere-gemeinde',
@@ -17,25 +16,41 @@ export class UnsereGemeindeComponent
   extends BasePageComponent
   implements OnInit
 {
-  data!: Hero;
+  pageData!: PageApiResponse;
+  isLoading: boolean = true;
 
-  private readonly pageDataService = inject(PageDataService);
+  private readonly pagesService = inject(PagesService);
 
   ngOnInit(): void {
     // Defer loadData to the next macrotask (event loop tick)
     // to prevent ExpressionChangedAfterItHasBeenCheckedError.
     setTimeout(() => this.loadData(), 0);
-  }
-  loadData(): void {
+  }  loadData(): void {
     this.resetErrorState();
-    this.pageDataService.getPageData(PAGE_SLUGS.COMMUNITY).subscribe({
-      // Using the constant PAGE_SLUGS.COMMUNITY instead of hardcoded string
-      next: (heroData: Hero) => {
-        this.data = heroData;
+    this.isLoading = true;
+    
+    const pageSlug = 'unsere-gemeinde';
+    console.log('Loading page data for slug:', pageSlug);
+
+    this.pagesService.getPageByRoute(pageSlug).subscribe({
+      next: (pageResponse: PageApiResponse) => {
+        console.log('Page API Response:', pageResponse);
+        console.log('Page title:', pageResponse.title);
+        console.log('Page layout:', pageResponse.data.layout);
+        console.log('Singleton data:', pageResponse.data.data);
+        
+        this.pageData = pageResponse;
+        this.isLoading = false;
       },
       error: (error: HttpErrorResponse) => {
-        // Added HttpErrorResponse type
+        console.error('Error fetching page data:', error);
+        console.error('Error details:', {
+          status: error.status,
+          message: error.message,
+          url: error.url,
+        });
         this.setErrorState(error);
+        this.isLoading = false;
       },
     });
   }
