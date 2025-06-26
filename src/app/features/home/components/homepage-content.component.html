@@ -63,29 +63,38 @@
         class="col-span-3 text-center p-6 bg-red-100 rounded-lg"
       >
         <p class="text-red-600 font-bold">No tiles found in API response</p>
-      </div>      <!-- Loop through all tiles in content -->
+      </div>
+      <!-- Loop through all tiles in content -->
       <div
         *ngFor="let tile of content.tiles; let i = index"
         class="card shadow-lg hover:shadow-2xl transition-all duration-300 h-full relative overflow-hidden group cursor-pointer transform hover:-translate-y-2"
         style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%)"
       >
-        <!-- Image -->        <figure class="relative overflow-hidden h-48">
+        <!-- Image -->
+        <figure class="relative overflow-hidden h-48">
           <img
             *ngIf="tile.tileImage?.path || tile.image?.path; else noImage"
-            [src]="baseApiUrl + '/storage/uploads' + (tile.tileImage?.path || tile.image?.path)"
+            [src]="
+              baseApiUrl +
+              '/storage/uploads' +
+              (tile.tileImage?.path || tile.image?.path)
+            "
             [alt]="tile.tileImage?.title || tile.image?.title || ''"
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             onerror="this.onerror=null; this.src='assets/images/placeholder.jpg';"
           />
           <ng-template #noImage>
-            <div class="w-full h-full bg-orange-300 flex items-center justify-center">
+            <div
+              class="w-full h-full bg-orange-300 flex items-center justify-center"
+            >
               <span class="text-orange-800">Kein Bild verfügbar</span>
             </div>
           </ng-template>
         </figure>
 
         <!-- Card Body -->
-        <div class="card-body p-6 text-white">          <h3 class="card-title text-2xl font-bold mb-4 text-white">
+        <div class="card-body p-6 text-white">
+          <h3 class="card-title text-2xl font-bold mb-4 text-white">
             {{ tile.tiletitle || tile.title || "Titel" }}
           </h3>
 
