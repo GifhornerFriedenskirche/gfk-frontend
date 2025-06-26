@@ -25,10 +25,11 @@ export class UnsereGemeindeComponent
     // Defer loadData to the next macrotask (event loop tick)
     // to prevent ExpressionChangedAfterItHasBeenCheckedError.
     setTimeout(() => this.loadData(), 0);
-  }  loadData(): void {
+  }
+  loadData(): void {
     this.resetErrorState();
     this.isLoading = true;
-    
+
     const pageSlug = 'unsere-gemeinde';
     console.log('Loading page data for slug:', pageSlug);
 
@@ -38,7 +39,7 @@ export class UnsereGemeindeComponent
         console.log('Page title:', pageResponse.title);
         console.log('Page layout:', pageResponse.data.layout);
         console.log('Singleton data:', pageResponse.data.data);
-        
+
         this.pageData = pageResponse;
         this.isLoading = false;
       },

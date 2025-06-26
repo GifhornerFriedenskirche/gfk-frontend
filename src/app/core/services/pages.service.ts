@@ -32,13 +32,15 @@ export class PagesService {
 
     // Format the route - ensure it starts with /
     const route = slug.startsWith('/') ? slug : `/${slug}`;
-    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.PAGES.PAGE}`;
-    
-    return this.http.get<PageApiResponse>(endpoint, {
-      params: { route }
-    }).pipe(
-      catchError((error) => this.errorHandler.handleHttpError(error))
-    );
+    const endpoint = `${this.baseService.getBaseApiUrl()}${
+      API_ENDPOINTS.PAGES.PAGE
+    }`;
+
+    return this.http
+      .get<PageApiResponse>(endpoint, {
+        params: { route },
+      })
+      .pipe(catchError((error) => this.errorHandler.handleHttpError(error)));
   }
 
   /**
@@ -51,10 +53,12 @@ export class PagesService {
       throw new Error('Page ID is required');
     }
 
-    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.PAGES.PAGE}/${id}`;
-    
-    return this.http.get<PageApiResponse>(endpoint).pipe(
-      catchError((error) => this.errorHandler.handleHttpError(error))
-    );
+    const endpoint = `${this.baseService.getBaseApiUrl()}${
+      API_ENDPOINTS.PAGES.PAGE
+    }/${id}`;
+
+    return this.http
+      .get<PageApiResponse>(endpoint)
+      .pipe(catchError((error) => this.errorHandler.handleHttpError(error)));
   }
 }

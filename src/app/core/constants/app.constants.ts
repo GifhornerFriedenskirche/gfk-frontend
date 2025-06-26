@@ -7,7 +7,8 @@ export const API_ENDPOINTS = {
   CONTENT: {
     ITEM: '/api/content/item',
     ITEMS: '/api/content/items',
-  },  PAGES: {
+  },
+  PAGES: {
     PAGES: '/api/pages/pages',
     MENUS: '/api/pages/menus',
     ROUTES: '/api/pages/routes',
