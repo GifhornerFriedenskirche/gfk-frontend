@@ -23,6 +23,7 @@ export const API_ENDPOINTS = {
 export const PAGE_SLUGS = {
   HOME: 'Startseite',
   COMMUNITY: 'UnsereGemeinde',
+  SERMONS: 'Predigten',
 } as const;
 
 // Loading and Error Messages

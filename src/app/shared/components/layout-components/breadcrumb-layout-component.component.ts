@@ -70,6 +70,7 @@ export class BreadcrumbLayoutComponent implements OnInit {
   private routeLabels: { [key: string]: string } = {
     '': 'Home',
     'unsere-gemeinde': 'Unsere Gemeinde',
+    predigten: 'Predigten',
     gottesdienst: 'Gottesdienst',
     veranstaltungen: 'Veranstaltungen',
     kontakt: 'Kontakt',

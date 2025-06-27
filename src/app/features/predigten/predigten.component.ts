@@ -14,7 +14,7 @@ import { ErrorStateComponent } from '../../shared/components/error-state/error-s
 import { DynamicLayoutComponent } from '../../shared/components/dynamic-layout/dynamic-layout.component';
 
 @Component({
-  selector: 'app-unsere-gemeinde',
+  selector: 'app-predigten',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,12 +22,9 @@ import { DynamicLayoutComponent } from '../../shared/components/dynamic-layout/d
     ErrorStateComponent,
     DynamicLayoutComponent,
   ],
-  templateUrl: './unsere-gemeinde.component.html',
+  templateUrl: './predigten.component.html',
 })
-export class UnsereGemeindeComponent
-  extends BasePageComponent
-  implements OnInit
-{
+export class PredigtenComponent extends BasePageComponent implements OnInit {
   pageData!: PageApiResponse;
   isLoading: boolean = true;
 
@@ -38,11 +35,12 @@ export class UnsereGemeindeComponent
     // to prevent ExpressionChangedAfterItHasBeenCheckedError.
     setTimeout(() => this.loadData(), 0);
   }
+
   loadData(): void {
     this.resetErrorState();
     this.isLoading = true;
 
-    const pageSlug = 'unsere-gemeinde';
+    const pageSlug = 'predigten';
 
     this.pagesService.getPageByRoute(pageSlug).subscribe({
       next: (pageResponse: PageApiResponse) => {

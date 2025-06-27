@@ -19,6 +19,14 @@ export const routes: Routes = [
       ),
     data: { breadcrumb: 'Unsere Gemeinde' },
   },
+  {
+    path: 'predigten',
+    loadChildren: () =>
+      import('./features/predigten/predigten.routes').then(
+        (m) => m.PREDIGTEN_ROUTES
+      ),
+    data: { breadcrumb: 'Predigten' },
+  },
   // Alternative: If you want to group home routes in the future
   // {
   //   path: 'home',

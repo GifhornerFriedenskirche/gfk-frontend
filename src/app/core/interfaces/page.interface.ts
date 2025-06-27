@@ -41,10 +41,13 @@ export interface PageLayoutComponent {
   hidden?: boolean;
 }
 
-export interface PageLayout {
+// Support for different layout structures
+export interface PageLayoutWithSections {
   before?: PageLayoutComponent[];
-  after?: PageLayoutComponent[] | null;
+  after?: PageLayoutComponent[];
 }
+
+export type PageLayout = PageLayoutComponent[] | PageLayoutWithSections;
 
 export interface PageSingletonData {
   stageImage: {
@@ -94,11 +97,7 @@ export interface PageSingletonData {
 }
 
 export interface PageData {
-  singleton: string;
-  catchSubSlugs: boolean;
   layout: PageLayout;
-  data: PageSingletonData;
-  params: unknown;
 }
 
 export interface PageApiResponse {
