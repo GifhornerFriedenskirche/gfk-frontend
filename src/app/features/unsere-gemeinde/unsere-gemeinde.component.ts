@@ -5,11 +5,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PagesService } from '../../core/services/pages.service';
 import { BasePageComponent } from '../../shared/components/base-page.component';
 import { PageApiResponse } from '../../core/interfaces/page.interface';
+import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-unsere-gemeinde',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, BreadcrumbComponent],
   templateUrl: './unsere-gemeinde.component.html',
 })
 export class UnsereGemeindeComponent

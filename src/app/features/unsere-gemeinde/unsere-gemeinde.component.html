@@ -66,14 +66,8 @@
           {{ pageData.title }}
         </h1>
 
-        <!-- Breadcrumb Navigation -->
-        <div class="text-lg md:text-xl font-light mb-8">
-          <a href="/" class="text-orange-400 hover:text-orange-300">Home</a>
-          <span class="mx-3 text-orange-400">/</span>
-          <span>{{
-            pageData.data.data.breadcrumb_title || pageData.title
-          }}</span>
-        </div>
+        <!-- Dynamic Breadcrumb Navigation -->
+        <app-breadcrumb></app-breadcrumb>
       </div>
     </div>
   </div>

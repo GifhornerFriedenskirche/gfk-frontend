@@ -17,6 +17,7 @@ export const routes: Routes = [
       import('./features/unsere-gemeinde/unsere-gemeinde.routes').then(
         (m) => m.unsereGemeindeRoutes
       ),
+    data: { breadcrumb: 'Unsere Gemeinde' },
   },
   // Alternative: If you want to group home routes in the future
   // {
