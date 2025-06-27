@@ -5,12 +5,25 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PagesService } from '../../core/services/pages.service';
 import { BasePageComponent } from '../../shared/components/base-page.component';
 import { PageApiResponse } from '../../core/interfaces/page.interface';
-import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
+import { LoadingStateComponent } from '../../shared/components/loading-state/loading-state.component';
+import { ErrorStateComponent } from '../../shared/components/error-state/error-state.component';
+import { HeroSectionComponent } from '../../shared/components/hero-section/hero-section.component';
+import { DynamicLayoutComponent } from '../../shared/components/dynamic-layout/dynamic-layout.component';
+import { MainContentSectionComponent } from '../../shared/components/main-content-section/main-content-section.component';
+import { ValuesSectionComponent } from '../../shared/components/values-section/values-section.component';
 
 @Component({
   selector: 'app-unsere-gemeinde',
   standalone: true,
-  imports: [CommonModule, BreadcrumbComponent],
+  imports: [
+    CommonModule, 
+    LoadingStateComponent,
+    ErrorStateComponent,
+    HeroSectionComponent,
+    DynamicLayoutComponent,
+    MainContentSectionComponent,
+    ValuesSectionComponent
+  ],
   templateUrl: './unsere-gemeinde.component.html',
 })
 export class UnsereGemeindeComponent
