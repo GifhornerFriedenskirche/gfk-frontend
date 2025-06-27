@@ -9,7 +9,10 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
   imports: [CommonModule, BreadcrumbComponent],
   template: `
     <div class="relative h-[70vh] w-full overflow-hidden">
-      <div class="absolute inset-0 bg-cover bg-center" [ngStyle]="backgroundStyle">
+      <div
+        class="absolute inset-0 bg-cover bg-center"
+        [ngStyle]="backgroundStyle"
+      >
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
       </div>
       <div class="absolute inset-0 flex items-center justify-center">
@@ -19,22 +22,22 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class HeroSectionComponent {
   @Input() title!: string;
   @Input() backgroundImage?: string;
-  
+
   private baseService = inject(BaseService);
-  
+
   get backgroundStyle() {
     return {
-      'background-image': this.backgroundImage 
-        ? `url(${this.getFullImagePath(this.backgroundImage)})` 
-        : 'linear-gradient(to right, #ff8800, #ff4400)'
+      'background-image': this.backgroundImage
+        ? `url(${this.getFullImagePath(this.backgroundImage)})`
+        : 'linear-gradient(to right, #ff8800, #ff4400)',
     };
   }
-  
+
   private getFullImagePath(path: string): string {
     return `${this.baseService.getBaseImagePathUrl()}${path}`;
   }

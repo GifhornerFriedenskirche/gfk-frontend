@@ -10,19 +10,17 @@ import { ErrorStateComponent } from '../../shared/components/error-state/error-s
 import { HeroSectionComponent } from '../../shared/components/hero-section/hero-section.component';
 import { DynamicLayoutComponent } from '../../shared/components/dynamic-layout/dynamic-layout.component';
 import { MainContentSectionComponent } from '../../shared/components/main-content-section/main-content-section.component';
-import { ValuesSectionComponent } from '../../shared/components/values-section/values-section.component';
 
 @Component({
   selector: 'app-unsere-gemeinde',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     LoadingStateComponent,
     ErrorStateComponent,
     HeroSectionComponent,
     DynamicLayoutComponent,
     MainContentSectionComponent,
-    ValuesSectionComponent
   ],
   templateUrl: './unsere-gemeinde.component.html',
 })

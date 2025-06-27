@@ -36,7 +36,7 @@ import { CommonModule } from '@angular/common';
         </button>
       </div>
     </div>
-  `
+  `,
 })
 export class ErrorStateComponent {
   @Input() errorMessage!: string;

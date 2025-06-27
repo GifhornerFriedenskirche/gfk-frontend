@@ -16,13 +16,13 @@ import { BaseService } from '../../../core/services/base.service';
         class="max-w-full h-auto rounded-lg shadow-lg mx-auto"
       />
     </div>
-  `
+  `,
 })
 export class ImageComponent {
   @Input() component!: PageLayoutComponent;
-  
+
   private baseService = inject(BaseService);
-  
+
   getFullImagePath(path: string): string {
     return `${this.baseService.getBaseImagePathUrl()}${path}`;
   }

@@ -68,13 +68,14 @@ import { BaseService } from '../../../core/services/base.service';
                   Glauben an Jesus Christus.
                 </p>
                 <p class="mb-4">
-                  Unsere Gottesdienste, Hauskreise, Kinder- und Jugendarbeit sowie
-                  verschiedene Veranstaltungen bieten vielfältige Möglichkeiten,
-                  Gemeinschaft zu erleben und den Glauben zu vertiefen.
+                  Unsere Gottesdienste, Hauskreise, Kinder- und Jugendarbeit
+                  sowie verschiedene Veranstaltungen bieten vielfältige
+                  Möglichkeiten, Gemeinschaft zu erleben und den Glauben zu
+                  vertiefen.
                 </p>
                 <p>
-                  Wir laden dich herzlich ein, Teil unserer Gemeinde zu werden und
-                  gemeinsam mit uns den Weg des Glaubens zu gehen.
+                  Wir laden dich herzlich ein, Teil unserer Gemeinde zu werden
+                  und gemeinsam mit uns den Weg des Glaubens zu gehen.
                 </p>
               </div>
             </div>
@@ -82,15 +83,16 @@ import { BaseService } from '../../../core/services/base.service';
         </div>
       </div>
     </section>
-  `
+  `,
 })
 export class MainContentSectionComponent {
   @Input() title!: string;
   @Input() content!: PageSingletonData;
-  @Input() welcomeText: string = 'Willkommen in unserer lebendigen Gemeinde! Hier findest du Menschen jeden Alters, die gemeinsam ihren Glauben leben und feiern.';
-  
+  @Input() welcomeText: string =
+    'Willkommen in unserer lebendigen Gemeinde! Hier findest du Menschen jeden Alters, die gemeinsam ihren Glauben leben und feiern.';
+
   private baseService = inject(BaseService);
-  
+
   getFullImagePath(path: string): string {
     return `${this.baseService.getBaseImagePathUrl()}${path}`;
   }

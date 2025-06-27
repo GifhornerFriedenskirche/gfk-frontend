@@ -2,40 +2,44 @@
 <app-loading-state *ngIf="isLoading"></app-loading-state>
 
 <!-- Error state -->
-<app-error-state 
-  *ngIf="hasError && !isLoading" 
-  [errorMessage]="errorMessage" 
-  (retry)="loadData()">
+<app-error-state
+  *ngIf="hasError && !isLoading"
+  [errorMessage]="errorMessage"
+  (retry)="loadData()"
+>
 </app-error-state>
 
 <!-- Main content -->
 <div *ngIf="pageData && !isLoading && !hasError">
   <!-- Hero Section -->
-  <app-hero-section 
-    [title]="pageData.title" 
-    [backgroundImage]="pageData.data.data.header_image.path">
-  </app-hero-section>
+  <!-- <app-hero-section
+    [title]="pageData.title"
+    [backgroundImage]="pageData.data.data.header_image.path"
+  >
+  </app-hero-section> -->
 
   <!-- Layout Components (Before) -->
-  <app-dynamic-layout 
-    *ngIf="pageData.data.layout.before?.length" 
+  <app-dynamic-layout
+    *ngIf="pageData.data.layout.before?.length"
     [components]="pageData.data.layout.before || []"
-    cssClass="py-12 bg-gray-50">
+    [pageTitle]="pageData.title"
+    cssClass=""
+  >
   </app-dynamic-layout>
 
   <!-- Main Content Section -->
-  <app-main-content-section 
+  <!-- <app-main-content-section
     [title]="pageData.title"
-    [content]="pageData.data.data">
-  </app-main-content-section>
-
-  <!-- Values Section -->
-  <app-values-section></app-values-section>
+    [content]="pageData.data.data"
+  >
+  </app-main-content-section> -->
 
   <!-- Layout Components (After) -->
-  <app-dynamic-layout 
-    *ngIf="pageData.data.layout.after?.length" 
+  <app-dynamic-layout
+    *ngIf="pageData.data.layout.after?.length"
     [components]="pageData.data.layout.after || []"
-    cssClass="py-12 bg-gray-100">
+    [pageTitle]="pageData.title"
+    cssClass="py-12 bg-gray-100"
+  >
   </app-dynamic-layout>
 </div>

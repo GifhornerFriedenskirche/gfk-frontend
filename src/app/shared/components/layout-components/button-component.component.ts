@@ -16,7 +16,7 @@ import { PageLayoutComponent } from '../../../core/interfaces/page.interface';
         {{ component.data.caption || component.label }}
       </a>
     </div>
-  `
+  `,
 })
 export class ButtonComponent {
   @Input() component!: PageLayoutComponent;
