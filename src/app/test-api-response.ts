@@ -18,16 +18,22 @@ export class TestApiComponent implements OnInit {
     const endpointItem = `${baseUrl}/api/content/item/homepageContentModel`;
     const endpointItems = `${baseUrl}/api/content/items/homepageContentModel`;
 
-    console.log('Testing /api/content/item endpoint:');
     this.http.get(endpointItem).subscribe({
-      next: (response) => console.log('Item response:', response),
-      error: (err) => console.error('Item error:', err),
+      next: () => {
+        // API response received - item endpoint
+      },
+      error: () => {
+        // Error occurred - item endpoint
+      },
     });
 
-    console.log('Testing /api/content/items endpoint:');
     this.http.get(endpointItems).subscribe({
-      next: (response) => console.log('Items response:', response),
-      error: (err) => console.error('Items error:', err),
+      next: () => {
+        // API response received - items endpoint
+      },
+      error: () => {
+        // Error occurred - items endpoint
+      },
     });
   }
 }

@@ -28,9 +28,6 @@ export class ErrorHandlerService {
       type: this.getErrorType(error),
     };
 
-    // Log error to console (in production, send to logging service)
-    console.error('HTTP Error occurred:', appError);
-
     // Show user-friendly error notification
     this.showErrorNotification(appError);
 
@@ -88,7 +85,6 @@ export class ErrorHandlerService {
       type: 'client',
     };
 
-    console.error('Client Error occurred:', appError);
     this.showErrorNotification(appError);
 
     return throwError(() => appError);

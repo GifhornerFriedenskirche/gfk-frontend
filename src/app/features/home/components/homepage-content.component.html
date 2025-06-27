@@ -57,13 +57,6 @@
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
     >
-      <!-- Debug info - will be removed in production -->
-      <div
-        *ngIf="content.tiles.length === 0"
-        class="col-span-3 text-center p-6 bg-red-100 rounded-lg"
-      >
-        <p class="text-red-600 font-bold">No tiles found in API response</p>
-      </div>
       <!-- Loop through all tiles in content -->
       <div
         *ngFor="let tile of content.tiles; let i = index"
@@ -110,12 +103,20 @@
           <!-- Action Button -->
           <div class="card-actions justify-end mt-6">
             <a
-              [routerLink]="tile.tileLink ? [tile.tileLink] : null"
-              [href]="!tile.tileLink ? '#' : null"
+              *ngIf="tile.tileLink; else noLinkButton"
+              [routerLink]="[tile.tileLink]"
               class="btn bg-white text-orange-500 hover:bg-orange-50 border-white hover:border-orange-100 transition-all duration-300 hover:scale-105"
             >
               Mehr erfahren
             </a>
+            <ng-template #noLinkButton>
+              <button
+                class="btn bg-white text-orange-500 hover:bg-orange-50 border-white hover:border-orange-100 transition-all duration-300 hover:scale-105 opacity-50 cursor-not-allowed"
+                disabled
+              >
+                Mehr erfahren
+              </button>
+            </ng-template>
           </div>
         </div>
       </div>

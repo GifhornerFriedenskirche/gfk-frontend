@@ -66,11 +66,8 @@ export class PageDataService {
 
     return this.http.get<unknown>(`${endpoint}/${modelName}`).pipe(
       map((response: unknown) => {
-        console.log('API response for homepage content:', response);
-
         // Since we now know the response is an array of tile objects
         if (Array.isArray(response)) {
-          console.log('Response is an array with', response.length, 'tiles');
           return {
             tiles: response as HomepageCardItem[],
           } as HomepageContentApiResponse;
@@ -79,11 +76,6 @@ export class PageDataService {
           // Check if response has entries array
           if (responseObj['entries'] && Array.isArray(responseObj['entries'])) {
             const entries = responseObj['entries'] as unknown[];
-            console.log(
-              'Response has entries array with',
-              entries.length,
-              'tiles'
-            );
             return {
               tiles: entries as HomepageCardItem[],
             } as HomepageContentApiResponse;
@@ -94,11 +86,6 @@ export class PageDataService {
             Array.isArray(responseObj['tiles'])
           ) {
             const tiles = responseObj['tiles'] as unknown[];
-            console.log(
-              'Response already has tiles array with',
-              tiles.length,
-              'items'
-            );
             return {
               tiles: tiles as HomepageCardItem[],
             } as HomepageContentApiResponse;
@@ -106,7 +93,6 @@ export class PageDataService {
         }
 
         // Default case if response format doesn't match any expected pattern
-        console.log('Unexpected response format, returning empty tiles array');
         return { tiles: [] } as HomepageContentApiResponse;
       }),
       catchError((error) => this.errorHandler.handleHttpError(error))

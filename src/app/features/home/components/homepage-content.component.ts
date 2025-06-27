@@ -44,46 +44,13 @@ export class HomepageContentComponent {
 
     this.pageDataService.getHomepageContentData().subscribe({
       next: (contentData) => {
-        console.log('Component received content data:', contentData);
-        if (contentData && contentData.tiles) {
-          console.log('Number of tiles received:', contentData.tiles.length);
-
-          // Log the complete tiles data for debugging
-          if (contentData.tiles.length > 0) {
-            console.log(
-              'Tiles data sample (first tile):',
-              JSON.stringify(contentData.tiles[0], null, 2)
-            );
-
-            // Log the properties available in each tile
-            const firstTile = contentData.tiles[0];
-            console.log('First tile properties:', Object.keys(firstTile));
-
-            // Make sure all required properties are available or have fallbacks in template
-            const requiredProps = ['tiletitle', 'tileText', 'tileImage'];
-            requiredProps.forEach((prop) => {
-              console.log(`Tile has ${prop}?`, prop in firstTile);
-            });
-          } else {
-            console.log('No tiles found in content data array');
-          }
-        } else {
-          console.log('No tiles array found in content data');
-        }
-
         // Use setTimeout to ensure state changes after change detection cycle
         setTimeout(() => {
           this.content = contentData;
-          console.log(
-            'Content set in component with',
-            contentData?.tiles?.length || 0,
-            'tiles'
-          );
           this.isLoading = false;
         });
       },
-      error: (err) => {
-        console.error('Error loading homepage content:', err);
+      error: () => {
         setTimeout(() => {
           this.hasError = true;
           this.content = null;
