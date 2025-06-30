@@ -102,13 +102,13 @@
 
           <!-- Action Button -->
           <div class="card-actions justify-end mt-6">
-            <a
+            <button
               *ngIf="tile.tileLink; else noLinkButton"
-              [routerLink]="[tile.tileLink]"
+              (click)="handleTileClick(tile)"
               class="btn bg-white text-orange-500 hover:bg-orange-50 border-white hover:border-orange-100 transition-all duration-300 hover:scale-105"
             >
               Mehr erfahren
-            </a>
+            </button>
             <ng-template #noLinkButton>
               <button
                 class="btn bg-white text-orange-500 hover:bg-orange-50 border-white hover:border-orange-100 transition-all duration-300 hover:scale-105 opacity-50 cursor-not-allowed"

@@ -1,8 +1,8 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { PageDataService } from '../../../core/services/page-data.service';
-import { HomepageContentApiResponse } from '../../../core/interfaces/homepage-content.interface';
+import { HomepageContentApiResponse, HomepageCardItem } from '../../../core/interfaces/homepage-content.interface';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -14,6 +14,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class HomepageContentComponent {
   private readonly pageDataService = inject(PageDataService);
+  private readonly router = inject(Router);
   private _initialLoadComplete = false;
 
   public content: HomepageContentApiResponse | null = null;
@@ -93,5 +94,15 @@ export class HomepageContentComponent {
       this.content = null;
       this.isLoading = false;
     }, 0);
+  }
+
+  /**
+   * Handle tile click for navigation
+   */
+  handleTileClick(tile: HomepageCardItem): void {
+    if (tile.tileLink) {
+      // Use programmatic navigation to ensure proper route handling
+      this.router.navigate([tile.tileLink]);
+    }
   }
 }
