@@ -13,17 +13,19 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './homepage-content.component.scss',
 })
 export class HomepageContentComponent {
-  private pageDataService = inject(PageDataService);
+  private readonly pageDataService = inject(PageDataService);
   private _initialLoadComplete = false;
+
+  public content: HomepageContentApiResponse | null = null;
+  public isLoading = false;
+  public readonly baseApiUrl = environment.apiBaseUrl;
+  public hasError = false;
 
   @Input()
   set initialLoadComplete(value: boolean) {
     this._initialLoadComplete = value;
     if (this._initialLoadComplete) {
-      // Defer loading to next JavaScript event loop
-      setTimeout(() => {
-        this.loadContent();
-      });
+      this.deferredLoadContent();
     }
   }
 
@@ -31,32 +33,65 @@ export class HomepageContentComponent {
     return this._initialLoadComplete;
   }
 
-  public content: HomepageContentApiResponse | null = null;
-  public isLoading = false; // Local loading state instead of using the shared service
-  public baseApiUrl = environment.apiBaseUrl;
-  public hasError = false;
+  /**
+   * Defer content loading to next event loop tick
+   * @private
+   */
+  private deferredLoadContent(): void {
+    setTimeout(() => this.loadContent(), 0);
+  }
+
+  /**
+   * Load homepage content data
+   */
   loadContent(): void {
-    this.hasError = false;
-    // Use setTimeout to ensure isLoading is set after change detection cycle
-    setTimeout(() => {
-      this.isLoading = true;
-    });
+    this.resetState();
+    this.setLoadingState(true);
 
     this.pageDataService.getHomepageContentData().subscribe({
-      next: (contentData) => {
-        // Use setTimeout to ensure state changes after change detection cycle
-        setTimeout(() => {
-          this.content = contentData;
-          this.isLoading = false;
-        });
-      },
-      error: () => {
-        setTimeout(() => {
-          this.hasError = true;
-          this.content = null;
-          this.isLoading = false;
-        });
-      },
+      next: (contentData) => this.handleContentSuccess(contentData),
+      error: () => this.handleContentError(),
     });
+  }
+
+  /**
+   * Reset component state
+   * @private
+   */
+  private resetState(): void {
+    this.hasError = false;
+  }
+
+  /**
+   * Set loading state with proper change detection
+   * @private
+   */
+  private setLoadingState(loading: boolean): void {
+    setTimeout(() => {
+      this.isLoading = loading;
+    }, 0);
+  }
+
+  /**
+   * Handle successful content loading
+   * @private
+   */
+  private handleContentSuccess(contentData: HomepageContentApiResponse): void {
+    setTimeout(() => {
+      this.content = contentData;
+      this.isLoading = false;
+    }, 0);
+  }
+
+  /**
+   * Handle content loading error
+   * @private
+   */
+  private handleContentError(): void {
+    setTimeout(() => {
+      this.hasError = true;
+      this.content = null;
+      this.isLoading = false;
+    }, 0);
   }
 }

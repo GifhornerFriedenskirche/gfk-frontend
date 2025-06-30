@@ -58,3 +58,17 @@ export const HTTP_CONFIG = {
   TIMEOUT: 30000, // 30 seconds
   RETRIES: 3,
 } as const;
+
+// Layout Component Types
+export const LAYOUT_COMPONENT_TYPES = {
+  BREADCRUMB: 'breadcrumbComp',
+  BUTTON: 'button',
+  IMAGE: 'image',
+} as const;
+
+// Layout Component CSS Classes
+export const LAYOUT_CSS_CLASSES = {
+  DEFAULT: 'py-12 bg-gray-50',
+  BREADCRUMB: '',
+  CONTENT_SECTION: 'py-12 bg-gray-100',
+} as const;

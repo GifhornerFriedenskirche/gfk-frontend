@@ -57,46 +57,52 @@ export class PageDataService {
   /**
    * Get homepage content data
    * @returns Observable of HomepageContentApiResponse
-   */ getHomepageContentData(): Observable<HomepageContentApiResponse> {
+   */
+  getHomepageContentData(): Observable<HomepageContentApiResponse> {
     const modelName = 'homepageContentModel';
-    // Use the correct ITEMS endpoint instead of ITEM
-    const endpoint = `${this.baseService.getBaseApiUrl()}${
-      API_ENDPOINTS.CONTENT.ITEMS
-    }`;
+    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.CONTENT.ITEMS}`;
 
     return this.http.get<unknown>(`${endpoint}/${modelName}`).pipe(
-      map((response: unknown) => {
-        // Since we now know the response is an array of tile objects
-        if (Array.isArray(response)) {
-          return {
-            tiles: response as HomepageCardItem[],
-          } as HomepageContentApiResponse;
-        } else if (response && typeof response === 'object') {
-          const responseObj = response as Record<string, unknown>;
-          // Check if response has entries array
-          if (responseObj['entries'] && Array.isArray(responseObj['entries'])) {
-            const entries = responseObj['entries'] as unknown[];
-            return {
-              tiles: entries as HomepageCardItem[],
-            } as HomepageContentApiResponse;
-          }
-          // Check if response already has tiles array
-          else if (
-            responseObj['tiles'] &&
-            Array.isArray(responseObj['tiles'])
-          ) {
-            const tiles = responseObj['tiles'] as unknown[];
-            return {
-              tiles: tiles as HomepageCardItem[],
-            } as HomepageContentApiResponse;
-          }
-        }
-
-        // Default case if response format doesn't match any expected pattern
-        return { tiles: [] } as HomepageContentApiResponse;
-      }),
+      map((response: unknown) => this.transformHomepageResponse(response)),
       catchError((error) => this.errorHandler.handleHttpError(error))
     );
+  }
+
+  /**
+   * Transform API response to HomepageContentApiResponse format
+   * @private
+   */
+  private transformHomepageResponse(response: unknown): HomepageContentApiResponse {
+    // Handle array response (direct tiles)
+    if (Array.isArray(response)) {
+      return { tiles: response as HomepageCardItem[] };
+    }
+
+    // Handle object response
+    if (response && typeof response === 'object') {
+      const responseObj = response as Record<string, unknown>;
+      
+      // Check for entries array
+      if (this.isValidArrayProperty(responseObj, 'entries')) {
+        return { tiles: responseObj['entries'] as HomepageCardItem[] };
+      }
+      
+      // Check for tiles array
+      if (this.isValidArrayProperty(responseObj, 'tiles')) {
+        return { tiles: responseObj['tiles'] as HomepageCardItem[] };
+      }
+    }
+
+    // Default fallback
+    return { tiles: [] };
+  }
+
+  /**
+   * Check if object property exists and is a valid array
+   * @private
+   */
+  private isValidArrayProperty(obj: Record<string, unknown>, property: string): boolean {
+    return obj[property] !== undefined && obj[property] !== null && Array.isArray(obj[property]);
   }
 
   // Removed validateHeroData method as it's not defined and not relevant to the current task.
