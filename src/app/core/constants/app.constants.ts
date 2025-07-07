@@ -64,6 +64,7 @@ export const LAYOUT_COMPONENT_TYPES = {
   BREADCRUMB: 'breadcrumbComp',
   BUTTON: 'button',
   IMAGE: 'image',
+  TITLE_SECTION: 'titleSection',
 } as const;
 
 // Layout Component CSS Classes

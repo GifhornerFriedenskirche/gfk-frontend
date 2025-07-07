@@ -61,4 +61,23 @@ export class PagesService {
       .get<PageApiResponse>(endpoint)
       .pipe(catchError((error) => this.errorHandler.handleHttpError(error)));
   }
+
+  /**
+   * Get page data by route using the routes endpoint
+   * @param route - The route for the page (e.g., 'startseite')
+   * @returns Observable of PageApiResponse
+   */
+  getPageByRouteEndpoint(route: string): Observable<PageApiResponse> {
+    if (!route?.trim()) {
+      throw new Error('Route is required');
+    }
+
+    const endpoint = `${this.baseService.getBaseApiUrl()}${
+      API_ENDPOINTS.PAGES.ROUTES
+    }/${route}`;
+
+    return this.http
+      .get<PageApiResponse>(endpoint)
+      .pipe(catchError((error) => this.errorHandler.handleHttpError(error)));
+  }
 }

@@ -54,6 +54,10 @@ export interface PageLayoutComponentData {
     _id: string;
   };
 
+  // Title Section specific
+  titleSectionHeadline?: string;
+  titleSectionSubline?: string;
+
   // Allow additional unknown properties for flexibility
   [key: string]: unknown;
 }

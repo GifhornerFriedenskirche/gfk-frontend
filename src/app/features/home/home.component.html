@@ -66,3 +66,11 @@
   *ngIf="showHomepageContent && data && !isLoading && !hasError"
   [initialLoadComplete]="true"
 ></app-homepage-content>
+
+<!-- Dynamic Layout Components -->
+<app-dynamic-layout
+  *ngIf="hasLayoutComponents() && pageData && !isLoading && !hasError"
+  [components]="getLayoutComponents()"
+  [pageTitle]="pageData.title"
+  cssClass=""
+></app-dynamic-layout>

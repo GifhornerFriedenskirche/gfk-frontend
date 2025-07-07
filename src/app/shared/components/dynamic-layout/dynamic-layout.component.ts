@@ -4,6 +4,7 @@ import { PageLayoutComponent } from '../../../core/interfaces/page.interface';
 import { ButtonComponent } from '../layout-components/button-component.component';
 import { ImageComponent } from '../layout-components/image-component.component';
 import { BreadcrumbLayoutComponent } from '../layout-components/breadcrumb-layout-component.component';
+import { TitleSectionComponent } from '../layout-components/title-section-component.component';
 import {
   LAYOUT_COMPONENT_TYPES,
   LAYOUT_CSS_CLASSES,
@@ -17,13 +18,17 @@ import {
     ButtonComponent,
     ImageComponent,
     BreadcrumbLayoutComponent,
+    TitleSectionComponent,
   ],
   template: `
     <div [class]="cssClass">
       <div *ngFor="let component of components" class="mb-8">
         <!-- Regular components with container -->
         <div
-          *ngIf="!isBreadcrumbComponent(component)"
+          *ngIf="
+            !isBreadcrumbComponent(component) &&
+            !isTitleSectionComponent(component)
+          "
           class="container mx-auto px-4"
         >
           <app-button-component
@@ -38,6 +43,13 @@ import {
           >
           </app-image-component>
         </div>
+
+        <!-- Full-width components without container -->
+        <app-title-section-component
+          *ngIf="isTitleSectionComponent(component)"
+          [component]="component"
+        >
+        </app-title-section-component>
 
         <!-- Breadcrumb component without container (full-width) -->
         <app-breadcrumb-layout-component
@@ -74,5 +86,12 @@ export class DynamicLayoutComponent {
    */
   isImageComponent(component: PageLayoutComponent): boolean {
     return component.component === LAYOUT_COMPONENT_TYPES.IMAGE;
+  }
+
+  /**
+   * Check if component is a title section component
+   */
+  isTitleSectionComponent(component: PageLayoutComponent): boolean {
+    return component.component === LAYOUT_COMPONENT_TYPES.TITLE_SECTION;
   }
 }
