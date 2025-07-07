@@ -10,16 +10,28 @@ export class UtilsService {
   /**
    * Check if object property exists and is a valid array
    */
-  isValidArrayProperty(obj: Record<string, unknown>, property: string): boolean {
-    return obj[property] !== undefined && obj[property] !== null && Array.isArray(obj[property]);
+  isValidArrayProperty(
+    obj: Record<string, unknown>,
+    property: string
+  ): boolean {
+    return (
+      obj[property] !== undefined &&
+      obj[property] !== null &&
+      Array.isArray(obj[property])
+    );
   }
 
   /**
    * Safely get nested object property
    */
-  getNestedProperty<T>(obj: Record<string, unknown>, path: string): T | undefined {
+  getNestedProperty<T>(
+    obj: Record<string, unknown>,
+    path: string
+  ): T | undefined {
     return path.split('.').reduce((current: unknown, key: string) => {
-      return current && typeof current === 'object' ? (current as Record<string, unknown>)[key] : undefined;
+      return current && typeof current === 'object'
+        ? (current as Record<string, unknown>)[key]
+        : undefined;
     }, obj) as T | undefined;
   }
 
@@ -33,7 +45,10 @@ export class UtilsService {
   /**
    * Debounce function calls
    */
-  debounce<T extends (...args: unknown[]) => unknown>(func: T, wait: number): (...args: Parameters<T>) => void {
+  debounce<T extends (...args: unknown[]) => unknown>(
+    func: T,
+    wait: number
+  ): (...args: Parameters<T>) => void {
     let timeout: NodeJS.Timeout;
     return (...args: Parameters<T>) => {
       clearTimeout(timeout);
@@ -48,15 +63,15 @@ export class UtilsService {
     if (obj === null || typeof obj !== 'object') {
       return obj;
     }
-    
+
     if (obj instanceof Date) {
       return new Date(obj.getTime()) as unknown as T;
     }
-    
+
     if (Array.isArray(obj)) {
-      return obj.map(item => this.deepClone(item)) as unknown as T;
+      return obj.map((item) => this.deepClone(item)) as unknown as T;
     }
-    
+
     const cloned = {} as T;
     for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -82,11 +97,11 @@ export class UtilsService {
    */
   formatFileSize(bytes: number): string {
     if (bytes === 0) return '0 Bytes';
-    
+
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 

@@ -40,7 +40,7 @@ export class EnvironmentService {
    * Get environment variable with fallback
    */
   getEnvVar(key: keyof typeof environment, fallback?: string): string {
-    return environment[key] as string || fallback || '';
+    return (environment[key] as string) || fallback || '';
   }
 
   /**
@@ -48,7 +48,7 @@ export class EnvironmentService {
    */
   isFeatureEnabled(featureName: string): boolean {
     const envRecord = environment as Record<string, unknown>;
-    const features = envRecord['features'] as Record<string, boolean> || {};
+    const features = (envRecord['features'] as Record<string, boolean>) || {};
     return features[featureName] === true;
   }
 }

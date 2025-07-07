@@ -11,14 +11,14 @@ export enum ErrorType {
   AUTHORIZATION = 'authorization',
   NOT_FOUND = 'not_found',
   SERVER = 'server',
-  UNKNOWN = 'unknown'
+  UNKNOWN = 'unknown',
 }
 
 export enum ErrorSeverity {
   LOW = 'low',
   MEDIUM = 'medium',
   HIGH = 'high',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 export interface AppError {

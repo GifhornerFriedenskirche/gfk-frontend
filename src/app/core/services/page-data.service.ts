@@ -86,11 +86,11 @@ export class PageDataService {
 
     // Handle object response
     if (response && typeof response === 'object') {
-      const responseObj = response as Record<string, unknown>;      // Check for entries array
+      const responseObj = response as Record<string, unknown>; // Check for entries array
       if (this.utils.isValidArrayProperty(responseObj, 'entries')) {
         return { tiles: responseObj['entries'] as HomepageCardItem[] };
       }
-      
+
       // Check for tiles array
       if (this.utils.isValidArrayProperty(responseObj, 'tiles')) {
         return { tiles: responseObj['tiles'] as HomepageCardItem[] };

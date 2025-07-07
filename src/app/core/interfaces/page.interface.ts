@@ -11,7 +11,7 @@ export interface PageLayoutComponentData {
   url?: string;
   caption?: string;
   target?: string | null;
-  
+
   // Breadcrumb specific
   breadcrumbImage?: {
     path: string;
@@ -32,7 +32,7 @@ export interface PageLayoutComponentData {
     folder: string;
     _id: string;
   };
-  
+
   // Legacy asset property (for backwards compatibility)
   asset?: {
     path: string;
@@ -53,7 +53,7 @@ export interface PageLayoutComponentData {
     folder: string;
     _id: string;
   };
-  
+
   // Allow additional unknown properties for flexibility
   [key: string]: unknown;
 }
