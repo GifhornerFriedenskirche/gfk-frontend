@@ -2,7 +2,10 @@ import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { PageDataService } from '../../../core/services/page-data.service';
-import { HomepageContentApiResponse, HomepageCardItem } from '../../../core/interfaces/homepage-content.interface';
+import {
+  HomepageContentApiResponse,
+  HomepageCardItem,
+} from '../../../core/interfaces/homepage-content.interface';
 import { environment } from '../../../../environments/environment';
 
 @Component({

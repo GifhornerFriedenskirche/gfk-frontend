@@ -15,7 +15,10 @@ import {
 @Component({
   template: '',
 })
-export abstract class CmsPageBaseComponent extends BasePageComponent implements OnInit {
+export abstract class CmsPageBaseComponent
+  extends BasePageComponent
+  implements OnInit
+{
   pageData!: PageApiResponse;
   isLoading = true;
 
@@ -39,7 +42,8 @@ export abstract class CmsPageBaseComponent extends BasePageComponent implements 
     this.setLoadingState(true);
 
     this.pagesService.getPageByRoute(this.pageSlug).subscribe({
-      next: (pageResponse: PageApiResponse) => this.handleDataSuccess(pageResponse),
+      next: (pageResponse: PageApiResponse) =>
+        this.handleDataSuccess(pageResponse),
       error: (error: HttpErrorResponse) => this.handleDataError(error),
     });
   }
@@ -84,7 +88,8 @@ export abstract class CmsPageBaseComponent extends BasePageComponent implements 
     }
 
     // If layout has before/after structure (old structure)
-    const layoutWithSections = this.pageData.data.layout as PageLayoutWithSections;
+    const layoutWithSections = this.pageData.data
+      .layout as PageLayoutWithSections;
     const components: PageLayoutComponent[] = [];
 
     if (layoutWithSections.before) {

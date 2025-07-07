@@ -60,7 +60,9 @@ export class PageDataService {
    */
   getHomepageContentData(): Observable<HomepageContentApiResponse> {
     const modelName = 'homepageContentModel';
-    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.CONTENT.ITEMS}`;
+    const endpoint = `${this.baseService.getBaseApiUrl()}${
+      API_ENDPOINTS.CONTENT.ITEMS
+    }`;
 
     return this.http.get<unknown>(`${endpoint}/${modelName}`).pipe(
       map((response: unknown) => this.transformHomepageResponse(response)),
@@ -72,7 +74,9 @@ export class PageDataService {
    * Transform API response to HomepageContentApiResponse format
    * @private
    */
-  private transformHomepageResponse(response: unknown): HomepageContentApiResponse {
+  private transformHomepageResponse(
+    response: unknown
+  ): HomepageContentApiResponse {
     // Handle array response (direct tiles)
     if (Array.isArray(response)) {
       return { tiles: response as HomepageCardItem[] };
@@ -81,12 +85,12 @@ export class PageDataService {
     // Handle object response
     if (response && typeof response === 'object') {
       const responseObj = response as Record<string, unknown>;
-      
+
       // Check for entries array
       if (this.isValidArrayProperty(responseObj, 'entries')) {
         return { tiles: responseObj['entries'] as HomepageCardItem[] };
       }
-      
+
       // Check for tiles array
       if (this.isValidArrayProperty(responseObj, 'tiles')) {
         return { tiles: responseObj['tiles'] as HomepageCardItem[] };
@@ -101,8 +105,15 @@ export class PageDataService {
    * Check if object property exists and is a valid array
    * @private
    */
-  private isValidArrayProperty(obj: Record<string, unknown>, property: string): boolean {
-    return obj[property] !== undefined && obj[property] !== null && Array.isArray(obj[property]);
+  private isValidArrayProperty(
+    obj: Record<string, unknown>,
+    property: string
+  ): boolean {
+    return (
+      obj[property] !== undefined &&
+      obj[property] !== null &&
+      Array.isArray(obj[property])
+    );
   }
 
   // Removed validateHeroData method as it's not defined and not relevant to the current task.

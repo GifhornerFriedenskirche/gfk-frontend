@@ -4,7 +4,10 @@ import { PageLayoutComponent } from '../../../core/interfaces/page.interface';
 import { ButtonComponent } from '../layout-components/button-component.component';
 import { ImageComponent } from '../layout-components/image-component.component';
 import { BreadcrumbLayoutComponent } from '../layout-components/breadcrumb-layout-component.component';
-import { LAYOUT_COMPONENT_TYPES, LAYOUT_CSS_CLASSES } from '../../../core/constants/app.constants';
+import {
+  LAYOUT_COMPONENT_TYPES,
+  LAYOUT_CSS_CLASSES,
+} from '../../../core/constants/app.constants';
 
 @Component({
   selector: 'app-dynamic-layout',
