@@ -7,9 +7,33 @@ export interface PageSeo {
 }
 
 export interface PageLayoutComponentData {
+  // Common properties
   url?: string;
   caption?: string;
   target?: string | null;
+  
+  // Breadcrumb specific
+  breadcrumbImage?: {
+    path: string;
+    title: string;
+    mime: string;
+    type: string;
+    description: string;
+    tags: string[];
+    size: number;
+    colors: string[];
+    width: number;
+    height: number;
+    _hash: string;
+    _created: number;
+    _modified: number;
+    _cby: string;
+    thumbhash: string;
+    folder: string;
+    _id: string;
+  };
+  
+  // Legacy asset property (for backwards compatibility)
   asset?: {
     path: string;
     title: string;
@@ -29,6 +53,8 @@ export interface PageLayoutComponentData {
     folder: string;
     _id: string;
   };
+  
+  // Allow additional unknown properties for flexibility
   [key: string]: unknown;
 }
 
