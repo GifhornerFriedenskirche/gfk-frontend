@@ -31,6 +31,8 @@ export class HomeComponent extends BasePageComponent implements OnInit {
   pageData: PageApiResponse | null = null;
   showHomepageContent = false;
   isLoading = false; // Local loading state
+  titleSectionHeadline: string | null = null; // Headline from Kachel - Überschrift
+  titleSectionSubline: string | null = null; // Subline from Kachel - Überschrift
 
   private readonly pageDataService = inject(PageDataService);
   private readonly pagesService = inject(PagesService);
@@ -65,66 +67,38 @@ export class HomeComponent extends BasePageComponent implements OnInit {
    * Load page data for dynamic layout components
    */
   private loadPageData(): void {
-    console.log('Loading page data from /api/pages/page?route=/startseite...');
     this.pagesService.getPageByRoute('/startseite').subscribe({
       next: (pageResponse: PageApiResponse) => {
-        console.log('=== PAGE DATA RESPONSE ===');
         console.log('Full response:', pageResponse);
-        console.log('Response type:', pageResponse.type);
-        console.log('Response title:', pageResponse.title);
-        console.log('Response data:', pageResponse.data);
 
-        if (pageResponse.data?.layout) {
-          console.log('=== LAYOUT DATA FOUND ===');
-          console.log('Layout object:', pageResponse.data.layout);
+        // Extract title section data from "tileSectionHeadline" property
+        const pageData = pageResponse.data as any;
+        if (pageData && pageData.data && pageData.data.tileSectionHeadline) {
+          const titleData = pageData.data.tileSectionHeadline;
+          console.log('tileSectionHeadline data:', titleData);
 
-          // Check if layout has sections (before/after) or is an array
-          if (Array.isArray(pageResponse.data.layout)) {
-            console.log('Layout is array:', pageResponse.data.layout);
-          } else {
-            const layoutWithSections = pageResponse.data
-              .layout as PageLayoutWithSections;
-            if (layoutWithSections.before) {
-              console.log('Before components:', layoutWithSections.before);
-            }
-            if (layoutWithSections.after) {
-              console.log('After components:', layoutWithSections.after);
+          if (Array.isArray(titleData) && titleData.length > 0) {
+            const firstItem = titleData[0];
+            console.log('Title section item:', firstItem);
+
+            if (firstItem.data) {
+              this.titleSectionHeadline =
+                firstItem.data.titleSectionHeadline || null;
+              this.titleSectionSubline =
+                firstItem.data.titleSectionSubline || null;
+              console.log('Extracted headline:', this.titleSectionHeadline);
+              console.log('Extracted subline:', this.titleSectionSubline);
             }
           }
-        } else {
-          console.log('No layout data found in response');
         }
 
         setTimeout(() => {
           this.pageData = pageResponse;
           this.isLoading = false;
           this.showHomepageContent = true;
-
-          // Log titleSection components specifically after processing
-          const allComponents = this.getLayoutComponents();
-          console.log('=== PROCESSED LAYOUT COMPONENTS ===');
-          console.log('All processed components:', allComponents);
-
-          const titleSections = allComponents.filter(
-            (comp) => comp.component === 'titleSection'
-          );
-          if (titleSections.length > 0) {
-            console.log('=== TITLE SECTION COMPONENTS ===');
-            console.log('Found titleSection components:', titleSections);
-            titleSections.forEach((section, index) => {
-              console.log(`TitleSection ${index + 1}:`, section);
-              console.log(`TitleSection ${index + 1} data:`, section.data);
-            });
-          } else {
-            console.log('No titleSection components found');
-          }
         });
       },
-      error: (error: HttpErrorResponse) => {
-        console.error('=== PAGE DATA LOADING ERROR ===');
-        console.error('Error details:', error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.message);
+      error: () => {
         setTimeout(() => {
           this.isLoading = false;
           this.showHomepageContent = true;

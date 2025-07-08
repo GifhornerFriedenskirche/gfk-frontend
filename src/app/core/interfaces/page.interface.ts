@@ -128,6 +128,7 @@ export interface PageSingletonData {
 
 export interface PageData {
   layout: PageLayout;
+  [key: string]: unknown; // Allow additional properties like "Kachel - Überschrift"
 }
 
 export interface PageApiResponse {

@@ -61,6 +61,23 @@
   </div>
 </div>
 
+<!-- Dynamic Title Section -->
+<section
+  class="py-16 bg-white"
+  *ngIf="titleSectionHeadline && titleSectionSubline && !isLoading && !hasError"
+>
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-8">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        {{ titleSectionHeadline }}
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        {{ titleSectionSubline }}
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- Homepage Content Section -->
 <app-homepage-content
   *ngIf="showHomepageContent && data && !isLoading && !hasError"
