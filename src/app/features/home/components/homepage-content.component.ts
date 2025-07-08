@@ -38,7 +38,7 @@ export class HomepageContentComponent {
   }
 
   /**
-   * Defer content loading to next event loop tick
+   * Defer content loading to next event loop tick for better UI responsiveness
    * @private
    */
   private deferredLoadContent(): void {
@@ -46,20 +46,27 @@ export class HomepageContentComponent {
   }
 
   /**
-   * Load homepage content data
+   * Load homepage content data from API
    */
   loadContent(): void {
     this.resetState();
-    this.setLoadingState(true);
+    this.isLoading = true;
 
     this.pageDataService.getHomepageContentData().subscribe({
-      next: (contentData) => this.handleContentSuccess(contentData),
-      error: () => this.handleContentError(),
+      next: (contentData) => {
+        this.content = contentData;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.hasError = true;
+        this.content = null;
+        this.isLoading = false;
+      },
     });
   }
 
   /**
-   * Reset component state
+   * Reset component state before loading new data
    * @private
    */
   private resetState(): void {
@@ -67,45 +74,13 @@ export class HomepageContentComponent {
   }
 
   /**
-   * Set loading state with proper change detection
-   * @private
-   */
-  private setLoadingState(loading: boolean): void {
-    setTimeout(() => {
-      this.isLoading = loading;
-    }, 0);
-  }
-
-  /**
-   * Handle successful content loading
-   * @private
-   */
-  private handleContentSuccess(contentData: HomepageContentApiResponse): void {
-    setTimeout(() => {
-      this.content = contentData;
-      this.isLoading = false;
-    }, 0);
-  }
-
-  /**
-   * Handle content loading error
-   * @private
-   */
-  private handleContentError(): void {
-    setTimeout(() => {
-      this.hasError = true;
-      this.content = null;
-      this.isLoading = false;
-    }, 0);
-  }
-
-  /**
    * Handle tile click for navigation
+   * @param tile The tile item that was clicked
    */
   handleTileClick(tile: HomepageCardItem): void {
-    if (tile.tileLink) {
-      // Use programmatic navigation to ensure proper route handling
-      this.router.navigate([tile.tileLink]);
+    const route = tile.tileLink?.trim();
+    if (route) {
+      this.router.navigate([route]);
     }
   }
 }

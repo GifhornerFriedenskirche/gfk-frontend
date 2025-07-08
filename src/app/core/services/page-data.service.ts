@@ -37,14 +37,18 @@ export class PageDataService {
    * Get page data by slug
    * @param pageSlug - The slug identifier for the page
    * @returns Observable of Hero data
+   * @throws Error if pageSlug is empty
    */
   getPageData(pageSlug: string): Observable<Hero> {
-    if (!pageSlug?.trim()) {
+    // Validate input
+    const trimmedSlug = pageSlug?.trim();
+    if (!trimmedSlug) {
       throw new Error('Page slug is required');
     }
 
-    return this.http.get<Hero>(`${this.apiEndpoint}/${pageSlug}`).pipe(
-      // map((data) => this.validateHeroData(data)), // Removed problematic line
+    // Build URL and make request
+    const url = `${this.apiEndpoint}/${trimmedSlug}`;
+    return this.http.get<Hero>(url).pipe(
       catchError((error) => this.errorHandler.handleHttpError(error))
     );
   }
@@ -56,17 +60,17 @@ export class PageDataService {
   getHomePageData(): Observable<Hero> {
     return this.getPageData(PAGE_SLUGS.HOME);
   }
+  
   /**
-   * Get homepage content data
+   * Get homepage content data (tiles/cards)
    * @returns Observable of HomepageContentApiResponse
    */
   getHomepageContentData(): Observable<HomepageContentApiResponse> {
     const modelName = 'homepageContentModel';
-    const endpoint = `${this.baseService.getBaseApiUrl()}${
-      API_ENDPOINTS.CONTENT.ITEMS
-    }`;
+    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.CONTENT.ITEMS}`;
+    const url = `${endpoint}/${modelName}`;
 
-    return this.http.get<unknown>(`${endpoint}/${modelName}`).pipe(
+    return this.http.get<unknown>(url).pipe(
       map((response: unknown) => this.transformHomepageResponse(response)),
       catchError((error) => this.errorHandler.handleHttpError(error))
     );
@@ -74,30 +78,33 @@ export class PageDataService {
 
   /**
    * Transform API response to HomepageContentApiResponse format
+   * Handles different response formats for backward compatibility
    * @private
    */
   private transformHomepageResponse(
     response: unknown
   ): HomepageContentApiResponse {
-    // Handle array response (direct tiles)
+    // Case 1: Response is already an array of tiles
     if (Array.isArray(response)) {
       return { tiles: response as HomepageCardItem[] };
     }
 
-    // Handle object response
+    // Case 2: Response is an object with entries or tiles property
     if (response && typeof response === 'object') {
-      const responseObj = response as Record<string, unknown>; // Check for entries array
+      const responseObj = response as Record<string, unknown>;
+      
+      // Try 'entries' property first (newer API format)
       if (this.utils.isValidArrayProperty(responseObj, 'entries')) {
         return { tiles: responseObj['entries'] as HomepageCardItem[] };
       }
-
-      // Check for tiles array
+      
+      // Then try 'tiles' property (older API format)
       if (this.utils.isValidArrayProperty(responseObj, 'tiles')) {
         return { tiles: responseObj['tiles'] as HomepageCardItem[] };
       }
     }
 
-    // Default fallback
+    // Default fallback - return empty tiles array
     return { tiles: [] };
   }
 }

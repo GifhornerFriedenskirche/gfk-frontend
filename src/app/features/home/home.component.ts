@@ -12,7 +12,7 @@ import { DynamicLayoutComponent } from '../../shared/components/dynamic-layout/d
 import {
   PageApiResponse,
   PageLayoutComponent,
-  PageLayoutWithSections,
+  PageLayoutWithSections
 } from '../../core/interfaces/page.interface';
 
 @Component({
@@ -27,84 +27,87 @@ import {
   templateUrl: './home.component.html',
 })
 export class HomeComponent extends BasePageComponent implements OnInit {
+  // Data properties
   data: Hero | null = null;
   pageData: PageApiResponse | null = null;
   showHomepageContent = false;
-  isLoading = false; // Local loading state
-  titleSectionHeadline: string | null = null; // Headline from Kachel - Überschrift
-  titleSectionSubline: string | null = null; // Subline from Kachel - Überschrift
+  isLoading = false;
+  
+  // Title section properties
+  titleSectionHeadline: string | null = null;
+  titleSectionSubline: string | null = null;
 
+  // Injected services
   private readonly pageDataService = inject(PageDataService);
   private readonly pagesService = inject(PagesService);
 
   ngOnInit(): void {
     this.loadData();
   }
+
+  /**
+   * Load all data needed for the homepage
+   */
   loadData(): void {
     this.resetErrorState();
     this.showHomepageContent = false;
     this.isLoading = true;
 
-    // Load both hero data and page data for layout components
+    // Load hero data and then page data
     this.pageDataService.getHomePageData().subscribe({
       next: (heroData: Hero) => {
-        setTimeout(() => {
-          this.data = heroData;
-          this.loadPageData(); // Load page data for layout components
-        });
+        this.data = heroData;
+        this.loadPageData();
       },
       error: (error: HttpErrorResponse) => {
-        setTimeout(() => {
-          this.setErrorState(error);
-          this.data = null;
-          this.isLoading = false;
-        });
+        this.setErrorState(error);
+        this.data = null;
+        this.isLoading = false;
       },
     });
   }
 
   /**
-   * Load page data for dynamic layout components
+   * Load page data for dynamic layout components and title section
    */
   private loadPageData(): void {
     this.pagesService.getPageByRoute('/startseite').subscribe({
       next: (pageResponse: PageApiResponse) => {
-        console.log('Full response:', pageResponse);
-
-        // Extract title section data from "tileSectionHeadline" property
-        const pageData = pageResponse.data as any;
-        if (pageData && pageData.data && pageData.data.tileSectionHeadline) {
-          const titleData = pageData.data.tileSectionHeadline;
-          console.log('tileSectionHeadline data:', titleData);
-
-          if (Array.isArray(titleData) && titleData.length > 0) {
-            const firstItem = titleData[0];
-            console.log('Title section item:', firstItem);
-
-            if (firstItem.data) {
-              this.titleSectionHeadline =
-                firstItem.data.titleSectionHeadline || null;
-              this.titleSectionSubline =
-                firstItem.data.titleSectionSubline || null;
-              console.log('Extracted headline:', this.titleSectionHeadline);
-              console.log('Extracted subline:', this.titleSectionSubline);
-            }
-          }
-        }
-
-        setTimeout(() => {
-          this.pageData = pageResponse;
-          this.isLoading = false;
-          this.showHomepageContent = true;
-        });
+        // Store page data
+        this.pageData = pageResponse;
+        
+        // Extract title section data
+        this.extractTitleSectionData(pageResponse);
+        
+        // Update UI state
+        this.isLoading = false;
+        this.showHomepageContent = true;
       },
       error: () => {
-        setTimeout(() => {
-          this.isLoading = false;
-          this.showHomepageContent = true;
-        });
+        this.isLoading = false;
+        this.showHomepageContent = true;
       },
     });
+  }
+  
+  /**
+   * Extract title section data from the API response
+   */
+  private extractTitleSectionData(pageResponse: PageApiResponse): void {
+    if (!pageResponse?.data?.data?.tileSectionHeadline) {
+      return;
+    }
+    
+    const titleDataArray = pageResponse.data.data.tileSectionHeadline;
+    
+    if (Array.isArray(titleDataArray) && titleDataArray.length > 0) {
+      const firstItem = titleDataArray[0];
+      
+      if (firstItem.data) {
+        this.titleSectionHeadline = firstItem.data.titleSectionHeadline || null;
+        this.titleSectionSubline = firstItem.data.titleSectionSubline || null;
+      }
+    }
   }
 
   /**
@@ -114,6 +117,13 @@ export class HomeComponent extends BasePageComponent implements OnInit {
     return !!(
       this.pageData?.data?.layout && this.getLayoutComponents().length > 0
     );
+  }
+
+  /**
+   * Check if the title section should be displayed
+   */
+  hasTitleSection(): boolean {
+    return !!(this.titleSectionHeadline && this.titleSectionSubline);
   }
 
   /**
@@ -136,6 +146,7 @@ export class HomeComponent extends BasePageComponent implements OnInit {
       .layout as PageLayoutWithSections;
     const components: PageLayoutComponent[] = [];
 
+    // Add components from before section
     if (layoutWithSections.before) {
       components.push(
         ...layoutWithSections.before.filter(
@@ -143,6 +154,8 @@ export class HomeComponent extends BasePageComponent implements OnInit {
         )
       );
     }
+    
+    // Add components from after section
     if (layoutWithSections.after) {
       components.push(
         ...layoutWithSections.after.filter(

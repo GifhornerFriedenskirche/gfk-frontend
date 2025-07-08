@@ -126,9 +126,23 @@ export interface PageSingletonData {
   _cby: string;
 }
 
+/**
+ * Interface for title section data
+ */
+export interface TitleSectionData {
+  titleSectionHeadline: string;
+  titleSectionSubline: string;
+}
+
 export interface PageData {
   layout: PageLayout;
-  [key: string]: unknown; // Allow additional properties like "Kachel - Überschrift"
+  data?: {
+    tileSectionHeadline?: Array<{
+      data?: TitleSectionData;
+    }>;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown; // Allow additional properties
 }
 
 export interface PageApiResponse {
