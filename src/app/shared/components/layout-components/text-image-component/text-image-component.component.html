@@ -18,11 +18,12 @@
       class="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 max-w-6xl mx-auto"
       [class.lg:flex-row-reverse]="isReversed"
     >
-      <!-- Image Section -->
-      <div class="w-full lg:w-1/2">
-        <div
-          class="overflow-hidden transform hover:scale-[1.02] transition-all duration-300 relative shadow-lg"
-        >
+      <!-- Image Section with background dots pattern -->
+      <div class="w-full lg:w-1/2 relative">
+        <!-- Dots pattern behind the image -->
+        <div class="absolute inset-2 -z-10 bg-dots-pattern opacity-10"></div>
+        
+        <div class="overflow-hidden relative shadow-lg">
           <img
             [src]="getImage()"
             [alt]="getImageAlt()"
@@ -35,12 +36,6 @@
       <!-- Text Section -->
       <div class="w-full lg:w-1/2">
         <div class="relative">
-          <!-- Orange accent line - position adjusts based on layout -->
-          <div
-            class="absolute top-0 bottom-0 w-1 bg-orange-500 rounded-full"
-            [ngClass]="{ 'lg:-left-4': !isReversed, 'lg:-right-4': isReversed }"
-          ></div>
-
           <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-6">
             {{ getTitle() }}
           </h2>
