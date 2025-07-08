@@ -76,10 +76,11 @@ export class TextImageComponent implements OnInit {
    * Get the component title
    */
   getTitle(): string {
+    const data = this.component?.data as PageLayoutComponentData;
     return (
-      ((this.component?.data as PageLayoutComponentData)?.[
-        'title'
-      ] as string) || ''
+      (data?.['title'] as string) ||
+      (data?.['textImageComponentTitle'] as string) ||
+      ''
     );
   }
 
@@ -87,8 +88,10 @@ export class TextImageComponent implements OnInit {
    * Get the component text content
    */
   getText(): string {
+    const data = this.component?.data as PageLayoutComponentData;
     return (
-      ((this.component?.data as PageLayoutComponentData)?.['text'] as string) ||
+      (data?.['text'] as string) ||
+      (data?.['textImageComponentText'] as string) ||
       ''
     );
   }
@@ -97,10 +100,10 @@ export class TextImageComponent implements OnInit {
    * Get the button text if available
    */
   getButtonText(): string {
+    const data = this.component?.data as PageLayoutComponentData;
     return (
-      ((this.component?.data as PageLayoutComponentData)?.[
-        'buttonText'
-      ] as string) || ''
+      (data?.['buttonText'] as string) ||
+      'Mehr erfahren'
     );
   }
 
@@ -108,10 +111,11 @@ export class TextImageComponent implements OnInit {
    * Get the button link if available
    */
   getButtonLink(): string {
+    const data = this.component?.data as PageLayoutComponentData;
     return (
-      ((this.component?.data as PageLayoutComponentData)?.[
-        'buttonLink'
-      ] as string) || ''
+      (data?.['buttonLink'] as string) ||
+      (data?.['textImageComponentLink'] as string) ||
+      ''
     );
   }
 
@@ -129,8 +133,9 @@ export class TextImageComponent implements OnInit {
     const data = this.component?.data as PageLayoutComponentData;
     const image = (data?.['image'] as unknown as { path?: string }) || {};
     const asset = (data?.['asset'] as unknown as { path?: string }) || {};
+    const textImageComponentImage = (data?.['textImageComponentImage'] as unknown as { path?: string }) || {};
 
-    const imagePath = image?.path || asset?.path;
+    const imagePath = image?.path || asset?.path || textImageComponentImage?.path;
 
     if (!imagePath) return '';
 
@@ -144,10 +149,12 @@ export class TextImageComponent implements OnInit {
     const data = this.component?.data as PageLayoutComponentData;
     const image = (data?.['image'] as unknown as { title?: string }) || {};
     const asset = (data?.['asset'] as unknown as { title?: string }) || {};
+    const textImageComponentImage = (data?.['textImageComponentImage'] as unknown as { title?: string }) || {};
 
     return (
       image?.title ||
       asset?.title ||
+      textImageComponentImage?.title ||
       (data?.['imageAlt'] as string) ||
       this.getTitle()
     );

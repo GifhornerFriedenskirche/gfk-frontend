@@ -27,14 +27,6 @@ export const routes: Routes = [
       ),
     data: { breadcrumb: 'Predigten' },
   },
-  {
-    path: 'text-image-demo',
-    loadChildren: () =>
-      import('./features/test-text-image/test-text-image.routes').then(
-        (m) => m.routes
-      ),
-    data: { breadcrumb: 'Text-Image Demo' },
-  },
   // Alternative: If you want to group home routes in the future
   // {
   //   path: 'home',

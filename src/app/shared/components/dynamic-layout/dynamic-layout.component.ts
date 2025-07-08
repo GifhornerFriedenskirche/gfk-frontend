@@ -116,7 +116,8 @@ export class DynamicLayoutComponent {
    * Check if component is a text-image component
    */
   isTextImageComponent(component: PageLayoutComponent): boolean {
-    return component.component === LAYOUT_COMPONENT_TYPES.TEXT_IMAGE;
+    return component.component === LAYOUT_COMPONENT_TYPES.TEXT_IMAGE || 
+           component.component === LAYOUT_COMPONENT_TYPES.TEXT_IMAGE_COMPONENT;
   }
 
   /**
@@ -126,9 +127,11 @@ export class DynamicLayoutComponent {
   getComponentIndex(component: PageLayoutComponent): number {
     if (!this.components || !this.components.length) return 0;
 
-    // Get all text-image components in the current layout
+    // Get all text-image components in the current layout (both naming conventions)
     const textImageComponents = this.components.filter(
-      (comp) => comp.component === LAYOUT_COMPONENT_TYPES.TEXT_IMAGE
+      (comp) => 
+        comp.component === LAYOUT_COMPONENT_TYPES.TEXT_IMAGE ||
+        comp.component === LAYOUT_COMPONENT_TYPES.TEXT_IMAGE_COMPONENT
     );
 
     // Find the position of this specific component in the filtered array by its ID

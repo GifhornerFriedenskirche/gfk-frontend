@@ -75,6 +75,12 @@ export class HomeComponent extends BasePageComponent implements OnInit {
       next: (pageResponse: PageApiResponse) => {
         // Store page data
         this.pageData = pageResponse;
+        
+        console.log('🏠 Homepage PageData:', this.pageData);
+        
+        // Debug logging for text-image components
+        const textImageComponents = this.extractTextImageComponents(pageResponse);
+        console.log('🖼️ Text-Image Components:', textImageComponents);
 
         // Extract title section data
         this.extractTitleSectionData(pageResponse);
@@ -107,6 +113,47 @@ export class HomeComponent extends BasePageComponent implements OnInit {
         this.titleSectionHeadline = firstItem.data.titleSectionHeadline || null;
         this.titleSectionSubline = firstItem.data.titleSectionSubline || null;
       }
+    }
+  }
+
+  /**
+   * Extract and return all text-image components from the page data
+   * Used for debugging purposes
+   */
+  private extractTextImageComponents(
+    pageResponse: PageApiResponse
+  ): PageLayoutComponent[] {
+    const layout = pageResponse?.data?.layout;
+    if (!layout) {
+      return [];
+    }
+
+    // Handle different layout formats
+    if (Array.isArray(layout)) {
+      // If layout is an array of components
+      return layout.filter(
+        (component) => component.component === 'text_image'
+      );
+    } else {
+      // If layout is a PageLayoutWithSections
+      const layoutWithSections = layout as PageLayoutWithSections;
+      const components: PageLayoutComponent[] = [];
+      
+      // Check before section
+      if (layoutWithSections.before && Array.isArray(layoutWithSections.before)) {
+        components.push(...layoutWithSections.before.filter(
+          (component) => component.component === 'text_image'
+        ));
+      }
+      
+      // Check after section
+      if (layoutWithSections.after && Array.isArray(layoutWithSections.after)) {
+        components.push(...layoutWithSections.after.filter(
+          (component) => component.component === 'text_image'
+        ));
+      }
+      
+      return components;
     }
   }
 
