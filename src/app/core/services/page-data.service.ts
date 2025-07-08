@@ -48,9 +48,9 @@ export class PageDataService {
 
     // Build URL and make request
     const url = `${this.apiEndpoint}/${trimmedSlug}`;
-    return this.http.get<Hero>(url).pipe(
-      catchError((error) => this.errorHandler.handleHttpError(error))
-    );
+    return this.http
+      .get<Hero>(url)
+      .pipe(catchError((error) => this.errorHandler.handleHttpError(error)));
   }
 
   /**
@@ -60,14 +60,16 @@ export class PageDataService {
   getHomePageData(): Observable<Hero> {
     return this.getPageData(PAGE_SLUGS.HOME);
   }
-  
+
   /**
    * Get homepage content data (tiles/cards)
    * @returns Observable of HomepageContentApiResponse
    */
   getHomepageContentData(): Observable<HomepageContentApiResponse> {
     const modelName = 'homepageContentModel';
-    const endpoint = `${this.baseService.getBaseApiUrl()}${API_ENDPOINTS.CONTENT.ITEMS}`;
+    const endpoint = `${this.baseService.getBaseApiUrl()}${
+      API_ENDPOINTS.CONTENT.ITEMS
+    }`;
     const url = `${endpoint}/${modelName}`;
 
     return this.http.get<unknown>(url).pipe(
@@ -92,12 +94,12 @@ export class PageDataService {
     // Case 2: Response is an object with entries or tiles property
     if (response && typeof response === 'object') {
       const responseObj = response as Record<string, unknown>;
-      
+
       // Try 'entries' property first (newer API format)
       if (this.utils.isValidArrayProperty(responseObj, 'entries')) {
         return { tiles: responseObj['entries'] as HomepageCardItem[] };
       }
-      
+
       // Then try 'tiles' property (older API format)
       if (this.utils.isValidArrayProperty(responseObj, 'tiles')) {
         return { tiles: responseObj['tiles'] as HomepageCardItem[] };

@@ -26,21 +26,21 @@ import { PageLayoutComponent } from '../../../core/interfaces/page.interface';
 })
 export class TitleSectionComponent {
   @Input() component!: PageLayoutComponent;
-  
+
   /**
    * Check if component has valid content to display
    */
   hasValidContent(): boolean {
     return !!(this.getHeadline() && this.getSubline());
   }
-  
+
   /**
    * Get headline from component data
    */
   getHeadline(): string {
     return this.component?.data?.titleSectionHeadline || '';
   }
-  
+
   /**
    * Get subline from component data
    */

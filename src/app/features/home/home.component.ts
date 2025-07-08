@@ -12,7 +12,7 @@ import { DynamicLayoutComponent } from '../../shared/components/dynamic-layout/d
 import {
   PageApiResponse,
   PageLayoutComponent,
-  PageLayoutWithSections
+  PageLayoutWithSections,
 } from '../../core/interfaces/page.interface';
 
 @Component({
@@ -32,7 +32,7 @@ export class HomeComponent extends BasePageComponent implements OnInit {
   pageData: PageApiResponse | null = null;
   showHomepageContent = false;
   isLoading = false;
-  
+
   // Title section properties
   titleSectionHeadline: string | null = null;
   titleSectionSubline: string | null = null;
@@ -75,10 +75,10 @@ export class HomeComponent extends BasePageComponent implements OnInit {
       next: (pageResponse: PageApiResponse) => {
         // Store page data
         this.pageData = pageResponse;
-        
+
         // Extract title section data
         this.extractTitleSectionData(pageResponse);
-        
+
         // Update UI state
         this.isLoading = false;
         this.showHomepageContent = true;
@@ -89,7 +89,7 @@ export class HomeComponent extends BasePageComponent implements OnInit {
       },
     });
   }
-  
+
   /**
    * Extract title section data from the API response
    */
@@ -97,12 +97,12 @@ export class HomeComponent extends BasePageComponent implements OnInit {
     if (!pageResponse?.data?.data?.tileSectionHeadline) {
       return;
     }
-    
+
     const titleDataArray = pageResponse.data.data.tileSectionHeadline;
-    
+
     if (Array.isArray(titleDataArray) && titleDataArray.length > 0) {
       const firstItem = titleDataArray[0];
-      
+
       if (firstItem.data) {
         this.titleSectionHeadline = firstItem.data.titleSectionHeadline || null;
         this.titleSectionSubline = firstItem.data.titleSectionSubline || null;
@@ -154,7 +154,7 @@ export class HomeComponent extends BasePageComponent implements OnInit {
         )
       );
     }
-    
+
     // Add components from after section
     if (layoutWithSections.after) {
       components.push(

@@ -1,0 +1,88 @@
+/* Text Image Component Styles */
+
+:host {
+  display: block;
+  /* Remove any potential inherited borders */
+  border: none;
+  outline: none;
+  background-color: #ffffff;
+}
+
+/* Add transitions to create smooth layout changes */
+.flex-row-reverse {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Add depth to images with enhanced shadow */
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* Ensure no borders appear */
+  border: none;
+  outline: none;
+}
+
+/* Background dots pattern */
+.bg-dots-pattern {
+  background-image: radial-gradient(rgba(0,0,0,0.3) 2px, transparent 2px);
+  background-size: 20px 20px;
+  background-position: 0 0;
+}
+
+/* Style for the HTML content from CMS */
+.prose {
+  /* Enable proper styling of HTML content */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  ul, ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  a {
+    color: #f59e0b;
+    text-decoration: underline;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      color: #d97706;
+    }
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1024px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  /* Adjust background dots pattern for mobile */
+  .bg-dots-pattern {
+    background-size: 15px 15px;
+  }
+  
+  /* Adjust accent line on mobile */
+  .absolute.-left-4 {
+    left: -0.5rem;
+  }
+}

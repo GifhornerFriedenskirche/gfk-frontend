@@ -65,6 +65,7 @@ export const LAYOUT_COMPONENT_TYPES = {
   BUTTON: 'button',
   IMAGE: 'image',
   TITLE_SECTION: 'titleSection',
+  TEXT_IMAGE: 'textImage',
 } as const;
 
 // Layout Component CSS Classes
